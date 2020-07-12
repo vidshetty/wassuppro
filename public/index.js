@@ -1,13 +1,19 @@
 const loginform = document.getElementById("login");
 const title = document.getElementById("title");
+const loader = document.getElementById("loader");
 var text = title.innerText;
+if(localStorage.getItem("token") != ""){
+    window.location = "./signup.html";
+}
 
 loginform.addEventListener("submit",(e) => {
     e.preventDefault();
     if(loginform.otp.hasAttribute("disabled")){
+        loader.classList.remove("none");
         axios.post("/login",{
             email: loginform.email.value
         }).then((result) => {
+            loader.classList.add("none");
             loginform.reset();
             if(result.data == "otp"){
                 loginform.otp.removeAttribute("disabled");
@@ -23,9 +29,11 @@ loginform.addEventListener("submit",(e) => {
         }).catch(err => console.log(err.message));
     }
     else{
+        loader.classList.remove("none");
         axios.post("/otp",{
             otp: loginform.otp.value
         }).then((result) => {
+            loader.classList.add("none");
             loginform.reset();
             if(result.data.msg == "success"){
                 localStorage.setItem("token",result.data.token);
