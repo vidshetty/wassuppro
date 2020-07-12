@@ -8,6 +8,7 @@
 
 body{
     background-color: #18171f;
+    overflow-y: auto;
     font-family: "Google Sans",sans-serif;
 }
 
