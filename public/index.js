@@ -2,8 +2,8 @@ const loginform = document.getElementById("login");
 const title = document.getElementById("title");
 const loader = document.getElementById("loader");
 var text = title.innerText;
-if(localStorage.getItem("token") != ""){
-    window.location = "./signup.html";
+if(localStorage.getItem("token") != "" || localStorage.getItem("token") != null){
+    // window.location = "./signup.html";
 }
 
 loginform.addEventListener("submit",(e) => {
