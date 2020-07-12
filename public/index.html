@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <title>Wassup!</title>
+</head>
+<body>
+    
+    <div class="logo">
+        <p>wassup!</p>
+    </div>
+    <div class="login">
+        <div class="formcontainer">
+            <div class="logintitle" id="title">Login</div>
+            <form class="loginform" id="login">
+                <input type="email" id="email" placeholder="E-mail" required autocomplete="off">
+                <input type="number" id="otp" placeholder="Enter OTP" required autocomplete="off" disabled>
+                <button id="loginsubmit">Submit</button>
+            </form>
+        </div>
+        <div class="registerlink"><p><a href="./signup.html">Sign Up</a></p></div>
+    </div>
+    <div class="toggletheme">
+        <p>Copyright by BrokenNose Studios</p>
+    </div>
+
+    <script src="./index.js" defer></script>
+</body>
+</html>
