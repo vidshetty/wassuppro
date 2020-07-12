@@ -62,8 +62,8 @@ body{
 .formcontainer{
     display: flex;
     flex-direction: column;
-    width: 80%;
-    height: 60%;
+    width: 290px;
+    height: 290px;
     border: 5px solid aliceblue;
     border-radius: 20px;
 }
