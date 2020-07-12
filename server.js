@@ -14,7 +14,7 @@ var randomotp = 0;
 var username = "";
 var email = "";
 
-mongoose.connect("mongodb://localhost:27017/wassup",{ useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://vid_shetty:itsmemongodb1998@tictactoe.jfyxk.mongodb.net/wassup?retryWrites=true&w=majority",{ useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once("open",() => {
     console.log("Database connected");
 });
