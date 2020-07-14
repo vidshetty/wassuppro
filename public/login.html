@@ -9,7 +9,7 @@
     <title>Wassup!</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
-    <script src="./signup.js" defer></script>
+    <script src="./login.js" defer></script>
 </head>
 <body>
     
@@ -17,17 +17,16 @@
         <p>wassup!</p>
     </div>
     <div class="login">
+        <div class="loading none" id="loader"></div>
         <div class="formcontainer">
-            <div class="loading none" id="loader"></div>
-            <div class="logintitle" id="title">Sign Up</div>
-            <form class="loginform" id="signup">
-                <input type="text" id="username" placeholder="Username" required autocomplete="off">
+            <div class="logintitle" id="title">Login</div>
+            <form class="loginform" id="login">
                 <input type="email" id="email" placeholder="E-mail" required autocomplete="off">
                 <input type="number" id="otp" placeholder="Enter OTP" required autocomplete="off" disabled>
                 <button id="loginsubmit">Submit</button>
             </form>
         </div>
-        <div class="registerlink"><p><a href="./login.html">Login</a></p></div>
+        <div class="registerlink"><p><a href="./signup.html">Sign Up</a></p></div>
     </div>
     <div class="toggletheme">
         <p>Copyright by BrokenNose Studios</p>

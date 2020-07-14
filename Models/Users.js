@@ -6,6 +6,10 @@ const UserSchema = new mongoose.Schema({
     jwt: {
         type: String,
         default: ""
+    },
+    chats: {
+        type: Array,
+        default: null
     }
 });
 

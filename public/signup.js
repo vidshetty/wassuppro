@@ -2,11 +2,13 @@ const signupform = document.getElementById("signup");
 const title = document.getElementById("title");
 const loader = document.getElementById("loader");
 var text = title.innerText;
+var emailid = "";
 
 signupform.addEventListener("submit",(e) => {
     e.preventDefault();
     if(signupform.otp.hasAttribute("disabled")){
         loader.classList.remove("none");
+        emailid = signupform.email.value;
         axios.post("/signup",{
             username: signupform.username.value,
             email: signupform.email.value
@@ -23,7 +25,7 @@ signupform.addEventListener("submit",(e) => {
                 title.innerText = "user exists";
                 setTimeout(() => {
                     title.innerText = text;
-                    window.location = "./index.html";
+                    window.location = "./login.html";
                 },2000);
             }
         }).catch(err => console.log(err.message));
@@ -31,7 +33,8 @@ signupform.addEventListener("submit",(e) => {
     else{
         loader.classList.remove("none");
         axios.post("/otp",{
-            otp: signupform.otp.value
+            otp: signupform.otp.value,
+            email: emailid
         }).then((res) => {
             loader.classList.add("none");
             signupform.reset();
@@ -39,7 +42,7 @@ signupform.addEventListener("submit",(e) => {
                 title.innerText = "user created";
                 setTimeout(() => {
                     title.innerText = text;
-                    window.location = "./index.html";
+                    window.location = "./login.html";
                 },2000);
             }
             else{
