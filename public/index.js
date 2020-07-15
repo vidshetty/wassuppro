@@ -51,6 +51,7 @@ else{
                         main.classList.add("none");
                         chatroom.classList.remove("none");
                         retrievechats(loggedinemail,chatroomemail);
+                        messages.scrollTop = messages.scrollHeight;
                     });
                 });
             }
