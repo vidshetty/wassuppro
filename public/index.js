@@ -32,7 +32,7 @@ else{
                 const div = document.createElement("div");
                 div.setAttribute("class","nodata");
                 div.textContent = "No chats";
-                // chatlist.appendChild(div);
+                chatlist.appendChild(div);
             }
             else{
                 result.data.value.forEach(doc => {
