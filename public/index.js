@@ -51,7 +51,6 @@ else{
                         main.classList.add("none");
                         chatroom.classList.remove("none");
                         retrievechats(loggedinemail,chatroomemail);
-                        messages.scrollTop = messages.scrollHeight;
                     });
                 });
             }
@@ -91,6 +90,7 @@ var retrievechats = (sender,receiver) => {
             }
             div1.appendChild(div2);
             messages.appendChild(div1);
+            messages.scrollTop = messages.scrollHeight;
         });
     }).catch(err => console.log(err.message));
 }
@@ -109,7 +109,7 @@ const resultlist = document.getElementById("resultlist");
 const msginput = document.getElementById("msginput");
 const messageinput = document.querySelector(".messageinput");
 
-messages.scrollTop = messages.scrollHeight;
+// messages.scrollTop = messages.scrollHeight;
 
 addbutton.addEventListener("click",(e) => {
     main.classList.add("none");
