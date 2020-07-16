@@ -318,7 +318,7 @@ app.post("/getusercred",(req,res) => {
             name: result.username,
             email: result.email
         });
-    });
+    }).catch(err => console.log(err.message));
 });
 
 app.post("/searchuser",(req,res) => {
