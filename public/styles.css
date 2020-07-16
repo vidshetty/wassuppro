@@ -1,4 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;600;700&display=swap');
+::-webkit-scrollbar{
+    width: 1px;
+}
+::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+    background-color: lightblue;
+    border-radius: 10px;
+}
 
 *{
     margin: 0;
@@ -18,16 +28,6 @@ body{
 }
 
 .landscape{
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5em;
-    color: white;
-    display: none;
-}
-
-.mobile{
     width: 100vw;
     height: 100vh;
     justify-content: center;
@@ -624,14 +624,6 @@ textarea:focus{
         display: none;
     }
     .landscape{
-        display: flex;
-    }
-}
-@media screen and (min-width:450px){
-    .loginmain{
-        display: none;
-    }
-    .mobile{
         display: flex;
     }
 }
