@@ -6,119 +6,90 @@
     <meta name="theme-color" content="#18171f">
     <meta name="apple-mobile-web-app-status-bar-style" content="#18171f">
     <link rel="stylesheet" href="./styles.css">
+    <link rel='icon' href='./icons8-topic-moved-96.png' type='image/x-icon'>
     <title>Wassup!</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-172413114-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-172413114-2');
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
     <script src="./index.js" defer></script>
 </head>
 <body>
     
-    <div class="main">
-        <div class="homelogo">
-            <p>wassup!</p>
+    <div class="loginmain">
+        <div class="main">
+            <div class="homelogo">
+                <p>wassup!</p>
+            </div>
+            <div class="navbar">
+                <ul class="list">
+                    <li class="active">Chats</li>
+                    <!-- <li class="">Groups</li> -->
+                </ul>
+            </div>
+            <div class="chats">
+                <div class="loading none" id="loader"></div>
+                <div class="chatlist" id="chatlist">
+                </div>
+            </div>
+            <div class="addbutton">
+                <div>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <button class="logoutbutton">Logout</button>
         </div>
-        <div class="navbar">
-            <ul class="list">
-                <li class="active">Chats</li>
-                <!-- <li class="">Groups</li> -->
-            </ul>
-        </div>
-        <div class="chats">
-            <div class="loading none" id="loader"></div>
-            <div class="chatlist" id="chatlist">
-                <!-- <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul><ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul>
-                <ul>
-                    <li>kbjsdvv</li>
-                    <li>kkdadbfdnf</li>
-                </ul> -->
+    
+        <div class="addscreen none">
+            <div class="search">
+                <input type="text" placeholder="search for people" autocomplete="off" id="searchinput">
+            </div>
+            <div class="results">
+                <div class="loading none" id="loader"></div>
+                <div class="resultlist" id="resultlist">
+                </div>
+            </div>
+            <div class="cancelbutton">
+                <div>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
-        <div class="addbutton">
-            <div>
-                <span></span>
-                <span></span>
+    
+        <div class="chatroom none">
+            <div class="loading none" id="loader"></div>
+            <div class="header">
+                <div class="backbutton">
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="usertitle">
+                    <p></p>
+                    <pre></pre>
+                </div>
+            </div>
+            <div class="messages">
+            </div>
+            <div class="messageinput">
+                    <textarea rows="1" placeholder="Enter message" id="msginput"></textarea>
+                    <button class="sendbutton">Send</button>
             </div>
         </div>
     </div>
-
-    <div class="addscreen none">
-        <div class="search">
-            <input type="text" placeholder="search for people" autocomplete="off" id="searchinput">
-        </div>
-        <div class="results">
-            <div class="loading none" id="loader"></div>
-            <div class="resultlist" id="resultlist">
-            </div>
-        </div>
-        <div class="cancelbutton">
-            <div>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+    
+    <div class="landscape">
+        Not optimized for landscape mode!
     </div>
 
-    <div class="chatroom none">
-        <div class="loading none" id="loader"></div>
-        <div class="header">
-            <div class="backbutton">
-                <span></span>
-                <span></span>
-            </div>
-            <div class="usertitle">
-                <p></p>
-                <pre>online</pre>
-            </div>
-        </div>
-        <div class="messages">
-        </div>
-        <div class="messageinput">
-                <textarea rows="1" placeholder="Enter message" id="msginput"></textarea>
-                <button class="sendbutton">Send</button>
-        </div>
+    <div class="mobile">
+        Oops! This app is optimized for mobile devices only
     </div>
 
 </body>

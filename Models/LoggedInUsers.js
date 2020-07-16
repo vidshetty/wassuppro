@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const LoggedInUserSchema = new mongoose.Schema({
     email: String,
     socketid: String,
+    loginsocketid: String,
     status:{
         type: String,
         default: "offline"

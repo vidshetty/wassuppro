@@ -28,7 +28,7 @@ signupform.addEventListener("submit",(e) => {
                     window.location = "./login.html";
                 },2000);
             }
-        }).catch(err => console.log(err.message));
+        });
     }
     else{
         loader.classList.remove("none");
@@ -48,6 +48,6 @@ signupform.addEventListener("submit",(e) => {
             else{
                 title.innerText = "invalid OTP";
             }
-        }).catch(err => console.log(err.message));
+        });
     }
 });

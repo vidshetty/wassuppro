@@ -26,7 +26,7 @@ loginform.addEventListener("submit",(e) => {
                     title.innerText = text;
                 },2000);
             }
-        }).catch(err => console.log(err.message));
+        });
     }
     else{
         loader.classList.remove("none");

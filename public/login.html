@@ -6,30 +6,48 @@
     <meta name="theme-color" content="#18171f">
     <meta name="apple-mobile-web-app-status-bar-style" content="#18171f">
     <link rel="stylesheet" href="./styles.css">
+    <link rel='icon' href='./icons8-topic-moved-96.png' type='image/x-icon'>
     <title>Wassup!</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-172413114-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-172413114-2');
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
     <script src="./login.js" defer></script>
 </head>
 <body>
     
-    <div class="logo">
-        <p>wassup!</p>
-    </div>
-    <div class="login">
-        <div class="loading none" id="loader"></div>
-        <div class="formcontainer">
-            <div class="logintitle" id="title">Login</div>
-            <form class="loginform" id="login">
-                <input type="email" id="email" placeholder="E-mail" required autocomplete="off">
-                <input type="number" id="otp" placeholder="Enter OTP" required autocomplete="off" disabled>
-                <button id="loginsubmit">Submit</button>
-            </form>
+    <div class="loginmain">
+        <div class="logo">
+            <p>wassup!</p>
         </div>
-        <div class="registerlink"><p><a href="./signup.html">Sign Up</a></p></div>
+        <div class="login">
+            <div class="loading none" id="loader"></div>
+            <div class="formcontainer">
+                <div class="logintitle" id="title">Login</div>
+                <form class="loginform" id="login">
+                    <input type="email" id="email" placeholder="E-mail" required autocomplete="off">
+                    <input type="number" id="otp" placeholder="Enter OTP" required autocomplete="off" disabled>
+                    <button id="loginsubmit">Submit</button>
+                </form>
+            </div>
+            <div class="registerlink"><p><a href="./signup.html">Sign Up</a></p></div>
+        </div>
+        <div class="toggletheme">
+            <p>Copyright by BrokenNose Studios</p>
+        </div>
     </div>
-    <div class="toggletheme">
-        <p>Copyright by BrokenNose Studios</p>
+
+    <div class="landscape">
+        Not optimized for landscape mode!
+    </div>
+
+    <div class="mobile">
+        Oops! This app is optimized for mobile devices only
     </div>
 
 </body>
