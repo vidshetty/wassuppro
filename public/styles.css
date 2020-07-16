@@ -424,6 +424,7 @@ body{
     width: 100vw;
     height: 82vh;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
 }
