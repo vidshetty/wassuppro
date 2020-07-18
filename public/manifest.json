@@ -1,16 +1,8 @@
 {
-    "name": "wassup!",
     "short_name": "wassuppro",
     "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#18171f",
     "theme_color": "#18171f",
     "orientation": "portrait-primary",
-    "icons": [
-        {
-            "src": "./icons8-topic-moved-96.png",
-            "sizes": "96x96",
-            "type": "image/png"
-        }
-    ]
 }
