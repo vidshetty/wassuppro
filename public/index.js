@@ -9,7 +9,6 @@ var chatroomtitlename = "";
 var chatroomemail = "";
 
 
-
 if(localStorage.getItem("token") == null || localStorage.getItem("token") == ""){
     window.location = "./login.html";
 }
@@ -32,9 +31,11 @@ var textareaheightfunc = (scrollval) => {
     var h = 70;
     if(scrollval > 43){
         messageinput.style.height = `${h + (scrollval + 20 - 42)}px`;
+        messages.style.bottom = `${h + (scrollval + 20 - 42)}px`;
     }
     else{
         messageinput.style.height = h + "px";
+        messages.style.bottom = h + "px";
     }
 }
 
@@ -45,6 +46,8 @@ var getallchats = () => {
         loader.classList.add("none");
         chatlist.innerText = "";
         if(result.data.length > 0){
+            result.data.sort(compare);
+            console.log(result.data);
             result.data.forEach(element => {
                 if(element.val == 1){
                     const ul = document.createElement("ul");
@@ -101,6 +104,17 @@ var getallchats = () => {
             chatlist.appendChild(div);
         }
     });
+}
+
+var compare = (a,b) => {
+    var one = a.name.toLowerCase();
+    var two = b.name.toLowerCase();
+    if(one > two){
+        return 1;
+    }
+    else{
+        return -1;
+    }
 }
 
 
