@@ -31,11 +31,9 @@ var textareaheightfunc = (scrollval) => {
     var h = 70;
     if(scrollval > 43){
         messageinput.style.height = `${h + (scrollval + 20 - 42)}px`;
-        messages.style.bottom = `${h + (scrollval + 20 - 42)}px`;
     }
     else{
         messageinput.style.height = h + "px";
-        messages.style.bottom = h + "px";
     }
 }
 

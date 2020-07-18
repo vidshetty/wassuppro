@@ -421,9 +421,6 @@ body{
 }
 
 .messages{
-    position: absolute;
-    z-index: -100;
-    bottom: 70px;
     margin-top: 8vh;
     width: 100vw;
     height: 82vh;
