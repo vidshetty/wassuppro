@@ -3,6 +3,7 @@ const loader = document.getElementById("loader");
 const chatlist = document.getElementById("chatlist");
 const messages = document.querySelector(".messages");
 const titlepre = document.querySelector(".usertitle pre");
+const addbutton = document.querySelector(".addbutton");
 var loggedinemail = "";
 var loggedinname = "";
 var chatroomtitlename = "";
@@ -17,12 +18,22 @@ else{
     axios.post("/getusercred",{
         data: localStorage.getItem("token")
     }).then(result => {
-        loggedinname = result.data.name;
-        loggedinemail = result.data.email;
-        socket.emit("initial",{
-            email: loggedinemail
-        });
-        getallchats();
+        if(result.data.email != "not matching"){
+            loggedinname = result.data.name;
+            loggedinemail = result.data.email;
+            socket.emit("initial",{
+                email: loggedinemail
+            });
+            getallchats();
+        }
+        else{
+            loader.classList.add("none");
+            const div = document.createElement("div");
+            div.setAttribute("class","nodata");
+            div.textContent = "You're logged in on another device";
+            chatlist.appendChild(div);
+            addbutton.style.display = "none";
+        }
     });
 }
 
@@ -148,7 +159,6 @@ var retrievechats = (sender,receiver) => {
     getonlinestatus(receiver);
 }
 
-const addbutton = document.querySelector(".addbutton");
 const sendbutton = document.querySelector(".sendbutton");
 const logoutbutton = document.querySelector(".logoutbutton");
 const usertitle = document.querySelector(".usertitle p");
@@ -168,6 +178,7 @@ addbutton.addEventListener("click",(e) => {
     main.classList.add("none");
     addscreen.classList.remove("none");
     searchinput.value = "";
+    resultlist.innerHTML = "";
 });
 cancelbutton.addEventListener("click",(e) => {
     main.classList.remove("none");
