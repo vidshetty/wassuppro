@@ -18,6 +18,7 @@ const bottomdiv = document.querySelector(".bottom");
 const mute = document.querySelector(".mute");
 const videomute = document.querySelector(".videomute");
 const close = document.querySelector(".close");
+var sent = "";
 var name = "";
 var loggedinemail = "";
 var loggedinname = "";
@@ -279,6 +280,7 @@ cutbutton.addEventListener("click",() => {
         caller: randomvar,
         receiver: loggedinemail
     });
+    sent = "sent";
 });
 mute.addEventListener("click",() => {
     console.log("mute clicked");
@@ -321,17 +323,28 @@ receivebutton.addEventListener("click",() => {
             callername: name,
             receiver: loggedinemail
         });
-        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-            const video = document.createElement("video");
-            ourstream = stream;
-            video.srcObject = stream;
-            video.muted = true;
-            video.onloadedmetadata = () => {
-                video.play();
-            }
-            bottomdiv.append(video);
-        });
+        sent = "sent";
+        // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+        //     const video = document.createElement("video");
+        //     ourstream = stream;
+        //     video.srcObject = stream;
+        //     video.muted = true;
+        //     video.onloadedmetadata = () => {
+        //         video.play();
+        //     }
+        //     bottomdiv.append(video);
+        // });
         peer.on("call",call => {
+            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                const video = document.createElement("video");
+                ourstream = stream;
+                video.srcObject = stream;
+                video.muted = true;
+                video.onloadedmetadata = () => {
+                    video.play();
+                }
+                bottomdiv.append(video);
+            });
             console.log("peercall");
             call.answer(ourstream);
             const videotop = document.createElement("video");
@@ -524,10 +537,19 @@ socket.on("callreq",data => {
         randomvar = data.caller;
         name = data.callername;
         receivermodal.classList.remove("none");
+        sent = "";
         p1.children[0].innerText = "incoming video call from";
         p1.children[1].innerText = data.callername;
         videocaller = data.caller;
         videoreceiver = data.receiver;
+        setTimeout(() => {
+            socket.emit("callres",{
+                res: -1,
+                caller: randomvar,
+                receiver: loggedinemail
+            });
+            receivermodal.classList.add("none");
+        },45000);
     }
 });
 
@@ -538,6 +560,13 @@ socket.on("callres",data => {
             p.children[0].innerText = "";
             callermodal.classList.add("none");
         },1000);
+    }
+    else if(data.res == -1){
+        p.children[0].innerText = "no response";
+        setTimeout(() => {
+            p.children[0].innerText = "";
+            callermodal.classList.add("none");
+        },2000);
     }
     else{
         videocaller = data.caller;
