@@ -225,6 +225,51 @@ io.on("connection",socket => {
         });
     });
 
+    socket.on("callreq",data => {
+        LoggedInUsers.findOne({email: data.receiver}).then(result => {
+            io.to(result.socketid).emit("callreq",{
+                req: data.req,
+                caller: data.caller,
+                callername: data.callername,
+                receiver: data.receiver
+            });
+        });
+    });
+
+    socket.on("callres",data => {
+        console.log(data);
+        LoggedInUsers.findOne({email: data.caller}).then(result => {
+            io.to(result.socketid).emit("callres",{
+                res: data.res,
+                callername: data.callername,
+                peerid: data.peerid,
+                caller: data.caller,
+                receiver: data.receiver
+            });
+        });
+    });
+
+    socket.on("left",data => {
+        if(data.left == "caller"){
+            LoggedInUsers.findOne({email: data.receiver}).then(result => {
+                io.to(result.socketid).emit("left",{
+                    left: "caller",
+                    caller: data.caller,
+                    receiver: data.receiver
+                });
+            });
+        }
+        else{
+            LoggedInUsers.findOne({email: data.caller}).then(result => {
+                io.to(result.socketid).emit("left",{
+                    left: "receiver",
+                    caller: data.caller,
+                    receiver: data.receiver
+                });
+            });
+        }
+    });
+
     socket.on("disconnect",() => {
         LoggedInUsers.findOneAndUpdate({socketid: socket.id},{status: "offline"},{new:true}).then((doc) => {
             socket.broadcast.emit("statusres",{
@@ -255,6 +300,7 @@ app.post("/signup",(req,res) => {
     Users.findOne({email: req.body.email}).then((doc) => {
         if(doc == null){
             mailer(req);
+            console.log(randomotp);
             res.send("otp");
         }
         else{

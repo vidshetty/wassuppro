@@ -629,3 +629,245 @@ textarea:focus{
         display: flex;
     }
 }
+
+.videocamera{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 100%;
+}
+.videocamera img{
+    width: 25px;
+    height: 25px;
+}
+
+.callermodal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.9);
+    z-index: 5000;
+}
+.callermodal.none{
+    display: none;
+}
+.flex{
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    height: 60vh;
+}
+.callingto{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.callingto p:nth-child(1){
+    margin-bottom: 20px;
+    font-size: 20px;
+    color:rgba(255,255,255,0.7);
+}
+.callingto p:nth-child(2){
+    font-size: 35px;
+    color: white;
+    font-weight: 600;
+}
+.end{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+}
+.endbutton{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+.endbutton img{
+    width: 50%;
+    height: 50%;
+}
+.endbutton:focus{
+    outline: none;
+}
+
+.receivermodal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.9);
+    z-index: 5000;
+}
+.receivermodal.none{
+    display: none;
+}
+.options{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+}
+.receivebutton{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+.receivebutton img{
+    width: 50%;
+    height: 50%;
+}
+.receivebutton:focus{
+    outline: none;
+}
+.callfrom{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.callfrom p:nth-child(1){
+    margin-bottom: 20px;
+    font-size: 20px;
+    color:rgba(255,255,255,0.7);
+}
+.callfrom p:nth-child(2){
+    font-size: 35px;
+    color: white;
+    font-weight: 600;
+}
+.cutbutton{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+.cutbutton img{
+    width: 50%;
+    height: 50%;
+}
+.cutbutton:focus{
+    outline: none;
+}
+
+
+.callui{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5000;
+    overflow-y: hidden;
+}
+.callui.none{
+    display: none;
+}
+.top{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50vh;
+    z-index: 5000;
+    background-color: #18171f;
+}
+.bottom{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50vh;
+    z-index: 5000;
+    background-color: #18171f;
+}
+.close,.mute,.videomute{
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6000;
+    border-radius: 50%;
+    border: none;
+}
+.close:focus,.mute:focus,.videomute:focus{
+    outline: none;
+}
+.close{
+    top: -100px;
+    left: 30px;
+    background-color: white;
+    transition: top 0.5s ease-in-out;
+}
+.close img,.mute img,.videomute img{
+    width: 60%;
+    height: 60%;
+}
+.mute{
+    bottom: -100px;
+    right: 30px;
+    background-color: #18171f;
+    transition: bottom 0.5s ease-in-out;
+}
+.videomute{
+    bottom: -100px;
+    right: 100px;
+    background-color: #18171f;
+    transition: bottom 0.5s ease-in-out;
+}
+video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.top div{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.top div p{
+    color: white;
+    font-size: 20px;
+}

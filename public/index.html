@@ -16,6 +16,7 @@
     gtag('js', new Date());
     gtag('config', 'UA-172413114-2');
     </script>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
     <script src="./index.js" defer></script>
@@ -75,6 +76,9 @@
                     <p></p>
                     <pre></pre>
                 </div>
+                <div class="videocamera">
+                    <img src="./cameraicon.png">
+                </div>
             </div>
             <div class="messages">
             </div>
@@ -82,7 +86,45 @@
                     <textarea rows="1" placeholder="Enter message" id="msginput"></textarea>
                     <button class="sendbutton">Send</button>
             </div>
+            <div class="callermodal none" id="callermodal">
+                <div class="flex">
+                    <div class="callingto">
+                        <p></p>
+                        <p></p>
+                    </div>
+                    <div class="end">
+                        <button class="endbutton">
+                            <img src="./endcall.png">
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <div class="receivermodal none" id="receivermodal">
+        <div class="flex">
+            <div class="callfrom">
+                <p></p>
+                <p></p>
+            </div>
+            <div class="options">
+                <button class="receivebutton">
+                    <img src="./receivebutton.png">
+                </button>
+                <button class="cutbutton">
+                    <img src="./endcall.png">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="callui none">
+        <button class="close"><img src="./close.png"></button>
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <button class="mute"><img src="./mute.png"></button>
+        <button class="videomute"><img src="./videomute.png"></button>
     </div>
     
     <div class="landscape">

@@ -4,10 +4,37 @@ const chatlist = document.getElementById("chatlist");
 const messages = document.querySelector(".messages");
 const titlepre = document.querySelector(".usertitle pre");
 const addbutton = document.querySelector(".addbutton");
+const endbutton = document.querySelector(".endbutton");
+const videocamera = document.querySelector(".videocamera");
+const p = document.querySelector(".callingto");
+const p1 = document.querySelector(".callfrom");
+const callermodal = document.getElementById("callermodal");
+const receivermodal = document.getElementById("receivermodal");
+const receivebutton = document.querySelector(".receivebutton");
+const cutbutton = document.querySelector(".cutbutton");
+const callui = document.querySelector(".callui");
+const topdiv = document.querySelector(".top");
+const bottomdiv = document.querySelector(".bottom");
+const mute = document.querySelector(".mute");
+const videomute = document.querySelector(".videomute");
+const close = document.querySelector(".close");
+var name = "";
 var loggedinemail = "";
 var loggedinname = "";
 var chatroomtitlename = "";
 var chatroomemail = "";
+var randomvar = "";
+var audiodisabled = "false";
+var videodisabled = "false";
+var videocaller = "";
+var videoreceiver = "";
+var peerid = "";
+var call,peer,ourstream;
+var constraints = {
+    video: true,
+    audio: true
+}
+
 
 
 if(localStorage.getItem("token") == null || localStorage.getItem("token") == ""){
@@ -174,6 +201,30 @@ const msginput = document.getElementById("msginput");
 const messageinput = document.querySelector(".messageinput");
 
 
+function movefunction(){
+    close.style.top = "30px";
+    mute.style.bottom = "30px";
+    videomute.style.bottom = "30px";
+    setTimeout(() => {
+        close.style.top = "-100px";
+        mute.style.bottom = "-100px";
+        videomute.style.bottom = "-100px"; 
+    },5000);
+}
+
+closefunc = () => {
+    topdiv.innerHTML = "";
+    bottomdiv.innerHTML = "";
+    callui.classList.add("none");
+}
+
+
+topdiv.addEventListener("click",() => {
+    movefunction();
+});
+bottomdiv.addEventListener("click",() => {
+    movefunction();
+});
 addbutton.addEventListener("click",(e) => {
     main.classList.add("none");
     addscreen.classList.remove("none");
@@ -198,6 +249,129 @@ logoutbutton.addEventListener("click",(e) => {
     });
     localStorage.clear();
     window.location = "./login.html";
+});
+videocamera.addEventListener("click",() => {
+    callermodal.classList.remove("none");
+    p.children[0].innerText = "calling....";
+    p.children[1].innerText = chatroomtitlename;
+    socket.emit("callreq",{
+        req: 1,
+        caller: loggedinemail,
+        callername: loggedinname,
+        receiver: chatroomemail
+    });
+});
+endbutton.addEventListener("click",() => {
+    p.children[1].innerText = "";
+    callermodal.classList.add("none");
+    socket.emit("callreq",{
+        req: 0,
+        caller: loggedinemail,
+        callername: loggedinname,
+        receiver: chatroomemail
+    });
+});
+cutbutton.addEventListener("click",() => {
+    p1.children[1].innerText = "";
+    receivermodal.classList.add("none");
+    socket.emit("callres",{
+        res: 0,
+        caller: randomvar,
+        receiver: loggedinemail
+    });
+});
+mute.addEventListener("click",() => {
+    console.log("mute clicked");
+    if(audiodisabled == "false"){
+        console.log("mute clicked");
+        mute.style.backgroundColor = "red";
+        audiodisabled = "true";
+        ourstream.getAudioTracks()[0].enabled = false;
+    }
+    else{
+        mute.style.backgroundColor = "#18171f";
+        audiodisabled = "false";
+        ourstream.getAudioTracks()[0].enabled = true;
+    }
+});
+videomute.addEventListener("click",() => {
+    if(videodisabled == "false"){
+        console.log("mute clicked");
+        videomute.style.backgroundColor = "red";
+        videodisabled = "true";
+        ourstream.getVideoTracks()[0].enabled = false;
+    }
+    else{
+        videomute.style.backgroundColor = "#18171f";
+        videodisabled = "false";
+        ourstream.getVideoTracks()[0].enabled = true;
+    }
+});
+receivebutton.addEventListener("click",() => {
+    p1.children[1].innerText = "";
+    receivermodal.classList.add("none");
+    peer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443});
+    peer.on("open",id => {
+        peerid = id;
+        console.log("peerid ",peerid);
+        socket.emit("callres",{
+            res: 1,
+            peerid: peerid,
+            caller: randomvar,
+            callername: name,
+            receiver: loggedinemail
+        });
+        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+            const video = document.createElement("video");
+            ourstream = stream;
+            video.srcObject = stream;
+            video.muted = true;
+            video.onloadedmetadata = () => {
+                video.play();
+            }
+            bottomdiv.append(video);
+        });
+        peer.on("call",call => {
+            console.log("peercall");
+            call.answer(ourstream);
+            const videotop = document.createElement("video");
+            call.on("stream",stream2 => {
+                videotop.srcObject = stream2;
+                videotop.onloadedmetadata = () => {
+                    videotop.play();
+                }
+                topdiv.append(videotop);
+            });
+            call.on("close",() => {
+                // videotop.remove();
+                // left();
+                console.log("close call");
+                ourstream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                socket.emit("left",{
+                    left: "receiver",
+                    caller: videocaller,
+                    receiver: videoreceiver
+                });
+            });
+        });
+        close.addEventListener("click",() => {
+            peer.destroy();
+            closefunc();
+            socket.emit("left",{
+                left: "caller",
+                caller: videocaller,
+                receiver: videoreceiver
+            });
+        });
+    });
+    videodisabled = "false";
+    audiodisabled = "false";
+    mute.style.backgroundColor = "#18171f";
+    videomute.style.backgroundColor = "#18171f";
+    callui.classList.remove("none");
+    movefunction();
 });
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
@@ -332,6 +506,104 @@ socket.on("typingyes",val => {
     }
 });
 
-socket.on("confirm",data => {
+socket.on("confirm",() => {
     getallchats();
+});
+
+socket.on("callreq",data => {
+    if(data.req == 0){
+        p1.children[0].innerText = "caller left";
+        videocaller = "";
+        videoreceiver = "";
+        setTimeout(() => {
+            p.children[0].innerText = "";
+            receivermodal.classList.add("none");
+        },1000);
+    }
+    else{
+        randomvar = data.caller;
+        name = data.callername;
+        receivermodal.classList.remove("none");
+        p1.children[0].innerText = "incoming video call from";
+        p1.children[1].innerText = data.callername;
+        videocaller = data.caller;
+        videoreceiver = data.receiver;
+    }
+});
+
+socket.on("callres",data => {
+    if(data.res == 0){
+        p.children[0].innerText = "call declined";
+        setTimeout(() => {
+            p.children[0].innerText = "";
+            callermodal.classList.add("none");
+        },1000);
+    }
+    else{
+        videocaller = data.caller;
+        videoreceiver = data.receiver;
+        name = chatroomtitlename;
+        callermodal.classList.add("none");
+        videodisabled = "false";
+        audiodisabled = "false";
+        mute.style.backgroundColor = "#18171f";
+        videomute.style.backgroundColor = "#18171f";
+        callui.classList.remove("none");
+        peer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443});
+        peer.on("open",id => {
+            peerid = id;
+            console.log("peerid ",peerid);
+            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                const video = document.createElement("video");
+                ourstream = stream;
+                video.srcObject = stream;
+                video.muted = true;
+                video.onloadedmetadata = () => {
+                    video.play();
+                }
+                bottomdiv.append(video);
+                const videotop = document.createElement("video");
+                call = peer.call(data.peerid,stream);
+                call.on("stream",stream2 => {
+                    videotop.srcObject = stream2;
+                    videotop.onloadedmetadata = () => {
+                        videotop.play();
+                    }
+                    topdiv.append(videotop);
+                });
+                call.on("close",() => {
+                    // left();
+                    console.log("close call");
+                    ourstream.getTracks().forEach(track => {
+                        track.stop();
+                    });
+                });
+            });
+            close.addEventListener("click",() => {
+                peer.destroy();
+                closefunc();
+                socket.emit("left",{
+                    left: "caller",
+                    caller: videocaller,
+                    receiver: videoreceiver
+                });
+            });
+        });
+        movefunction();
+    }
+});
+
+socket.on("left",data => {
+    console.log("close call");
+    topdiv.innerHTML = "";
+    const newdiv = document.createElement("div");
+    const newp = document.createElement("p");
+    newp.textContent = `${name} left`;
+    newdiv.appendChild(newp);
+    topdiv.appendChild(newdiv);
+    setTimeout(() => {
+        closefunc();
+        topdiv.innerHTML = "";
+        peer.destroy();
+    },2000);
 });
