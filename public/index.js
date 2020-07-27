@@ -324,27 +324,27 @@ receivebutton.addEventListener("click",() => {
             receiver: loggedinemail
         });
         sent = "sent";
-        // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-        //     const video = document.createElement("video");
-        //     ourstream = stream;
-        //     video.srcObject = stream;
-        //     video.muted = true;
-        //     video.onloadedmetadata = () => {
-        //         video.play();
-        //     }
-        //     bottomdiv.append(video);
-        // });
+        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+            const video = document.createElement("video");
+            ourstream = stream;
+            video.srcObject = stream;
+            video.muted = true;
+            video.onloadedmetadata = () => {
+                video.play();
+            }
+            bottomdiv.append(video);
+        });
         peer.on("call",call => {
-            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-                const video = document.createElement("video");
-                ourstream = stream;
-                video.srcObject = stream;
-                video.muted = true;
-                video.onloadedmetadata = () => {
-                    video.play();
-                }
-                bottomdiv.append(video);
-            });
+            // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+            //     const video = document.createElement("video");
+            //     ourstream = stream;
+            //     video.srcObject = stream;
+            //     video.muted = true;
+            //     video.onloadedmetadata = () => {
+            //         video.play();
+            //     }
+            //     bottomdiv.append(video);
+            // });
             console.log("peercall");
             call.answer(ourstream);
             const videotop = document.createElement("video");
