@@ -376,6 +376,9 @@ videomute.addEventListener("click",() => {
     }
 });
 receivebutton.addEventListener("click",() => {
+    navigator.wakeLock.request("screen").then(lock => {
+        console.log("lock ",lock);
+    });
     p1.children[1].innerText = "";
     receivermodal.classList.add("none");
     peer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443});
