@@ -393,7 +393,7 @@ receivebutton.addEventListener("click",() => {
 console.log("window ",window.height," viewport ",viewport.height);
 window.onresize = function(){
     textareaheightfunc(42);
-    console.log("window ",window.height," viewport ",viewport.height);
+    console.log("window ",window.height);
 }
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
