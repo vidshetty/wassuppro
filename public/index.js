@@ -390,11 +390,14 @@ receivebutton.addEventListener("click",() => {
     callui.classList.remove("none");
     movefunction();
 });
-textarea.addEventListener("focus",e => {
+// textarea.addEventListener("focus",e => {
+//     textareaheightfunc(42);
+//     textarea.style.scrollHeight = 42;
+//     console.log(textarea.style.scrollHeight);
+// });
+window.onresize = function(){
     textareaheightfunc(42);
-    textarea.style.scrollHeight = 42;
-    console.log(textarea.style.scrollHeight);
-});
+}
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
