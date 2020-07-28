@@ -484,6 +484,7 @@ textarea{
     color: white;
     font-size: 18px;
     font-family: "Google Sans",sans-serif;
+    text-decoration: none;
     letter-spacing: 2px;
     overflow: hidden;
     z-index: 20;
