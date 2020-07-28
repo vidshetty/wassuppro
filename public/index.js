@@ -88,10 +88,6 @@ var textareaheightfunc = (scrollval) => {
     }
 }
 
-textarea.addEventListener("focus",() => {
-    textareaheightfunc(42);
-});
-
 var getallchats = () => {
     axios.post("/trial",{
         data: loggedinemail
@@ -405,6 +401,9 @@ window.onresize = function(){
     textareaheightfunc(42);
     console.log("window ",window.height);
 }
+textarea.addEventListener("focus",() => {
+    textareaheightfunc(42);
+});
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
