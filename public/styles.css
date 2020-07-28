@@ -451,12 +451,14 @@ body{
 .left{
     float: left;
     color: white;
+    margin-left: 10px;
 }
 .right{
     float: right;
     background-color: #094b0f;
     color: white;
     border: none;
+    margin-right: 10px;
 }
 
 .messageinput{
