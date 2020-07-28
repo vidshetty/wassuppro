@@ -21,6 +21,8 @@ const close = document.querySelector(".close");
 var newcount = -1;
 var oldcount = 0;
 var t;
+var msginputcount = 0;
+var othermsgcount = 0;
 var sent = "";
 var name = "";
 var loggedinemail = "";
@@ -181,14 +183,48 @@ var retrievechats = (sender,receiver) => {
             div1.setAttribute("class","eachmsg");
             const div2 = document.createElement("div");
             div2.textContent = result.data.chats[i].msg;
-            if(sender == result.data.chats[i].email){
-                div2.setAttribute("class","msg right");
+            if(i>0){
+                if(result.data.chats[i-1].email != result.data.chats[i].email){
+                    if(sender == result.data.chats[i].email){
+                        div2.setAttribute("class","msg right");
+                        div2.style.marginTop = "15px";
+                    }
+                    else{
+                        div2.setAttribute("class","msg left");
+                        div2.style.marginTop = "15px";
+                    }
+                    div1.appendChild(div2);
+                    messages.appendChild(div1);
+                }
+                else{
+                    const div1 = document.createElement("div");
+                    div1.setAttribute("class","eachmsg");
+                    const div2 = document.createElement("div");
+                    div2.textContent = result.data.chats[i].msg;
+                    if(sender == result.data.chats[i].email){
+                        div2.setAttribute("class","msg right");
+                    }
+                    else{
+                        div2.setAttribute("class","msg left");
+                    }
+                    div1.appendChild(div2);
+                    messages.appendChild(div1);
+                }
             }
             else{
-                div2.setAttribute("class","msg left");
+                const div1 = document.createElement("div");
+                div1.setAttribute("class","eachmsg");
+                const div2 = document.createElement("div");
+                div2.textContent = result.data.chats[i].msg;
+                if(sender == result.data.chats[i].email){
+                    div2.setAttribute("class","msg right");
+                }
+                else{
+                    div2.setAttribute("class","msg left");
+                }
+                div1.appendChild(div2);
+                messages.appendChild(div1);
             }
-            div1.appendChild(div2);
-            messages.appendChild(div1);
             messages.scrollTop = messages.scrollHeight;
         };
     });
@@ -262,6 +298,7 @@ backbutton.addEventListener("click",(e) => {
     chatroomtitlename = "";
     messages.innerHTML = "";
     chatroomemail = "";
+    msginputcount = 0;
     getallchats();
 });
 logoutbutton.addEventListener("click",(e) => {
@@ -467,13 +504,18 @@ sendbutton.addEventListener("click",(e) => {
         textareaheightfunc(textarea.scrollHeight);
     }
     else{
-        var html = `
-        <div class="eachmsg">
-        <div class="msg right">
-            ${msg}
-        </div>
-        </div>`;
-        messages.innerHTML += html;
+        const divmain = document.createElement("div");
+        const divin = document.createElement("div");
+        divmain.setAttribute("class","eachmsg");
+        divin.setAttribute("class","msg right");
+        divin.textContent = msg;
+        divmain.appendChild(divin);
+        if(msginputcount == 0){
+            divin.style.marginTop = "15px";
+        }
+        messages.appendChild(divmain);
+        msginputcount += 1;
+        othermsgcount = 0;
         messages.scrollTop = messages.scrollHeight;
         msginput.value = "";
         textarea.style.height = "auto";
@@ -500,6 +542,10 @@ socket.on("livemsg",data => {
         div2.textContent = data.msg;
         div2.setAttribute("class","msg left");
         div1.appendChild(div2);
+        if(othermsgcount == 0){
+            div2.style.marginTop = "15px";
+            othermsgcount += 1;
+        }
         messages.appendChild(div1);
         messages.scrollTop = messages.scrollHeight;
     }
