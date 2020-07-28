@@ -23,7 +23,7 @@ var lastemail = "";
 var newcount = -1;
 var oldcount = 0;
 var t;
-var main = null;
+var mainvalue = null;
 var msginputcount = 0;
 var othermsgcount = 0;
 var sent = "";
@@ -378,7 +378,7 @@ videomute.addEventListener("click",() => {
 });
 receivebutton.addEventListener("click",() => {
     navigator.wakeLock.request("screen").then(lock => {
-        main = lock;
+        mainvalue = lock;
     });
     p1.children[1].innerText = "";
     receivermodal.classList.add("none");
@@ -414,8 +414,8 @@ receivebutton.addEventListener("click",() => {
                 topdiv.append(videotop);
             });
             call.on("close",() => {
-                main.release();
-                main = null;
+                mainvalue.release();
+                mainvalue = null;
                 ourstream.getTracks().forEach(track => {
                     track.stop();
                 });
@@ -682,7 +682,7 @@ socket.on("callres",data => {
                 const videotop = document.createElement("video");
                 call = peer.call(data.peerid,stream);
                 navigator.wakeLock.request("screen").then(lock => {
-                    main = lock;
+                    mainvalue = lock;
                 });
                 call.on("stream",stream2 => {
                     videotop.srcObject = stream2;
@@ -692,8 +692,8 @@ socket.on("callres",data => {
                     topdiv.append(videotop);
                 });
                 call.on("close",() => {
-                    main.release();
-                    main = null;
+                    mainvalue.release();
+                    mainvalue = null;
                     ourstream.getTracks().forEach(track => {
                         track.stop();
                     });
