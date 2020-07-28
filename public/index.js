@@ -77,12 +77,14 @@ var textareaheightfunc = (scrollval) => {
         messages.style.bottom = messageinput.style.height;
         var mh = window.innerHeight * 0.82;
         messages.style.height = (mh - messageinput.style.height) + "px";
+        console.log(messages.style.height);
     }
     else{
         messageinput.style.height = h + "px";
         messages.style.bottom = messageinput.style.height;
         var mh = window.innerHeight * 0.82;
         messages.style.height = (mh - messageinput.style.height) + "px";
+        console.log(messages.style.height);
     }
 }
 
