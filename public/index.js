@@ -1,5 +1,6 @@
 const socket = io.connect("",{ "sync disconnect on unload":true });
 const loader = document.getElementById("loader");
+const loader1 = document.getElementById("loader1");
 const chatlist = document.getElementById("chatlist");
 const messages = document.querySelector(".messages");
 const titlepre = document.querySelector(".usertitle pre");
@@ -18,6 +19,7 @@ const bottomdiv = document.querySelector(".bottom");
 const mute = document.querySelector(".mute");
 const videomute = document.querySelector(".videomute");
 const close = document.querySelector(".close");
+var lastemail = "";
 var newcount = -1;
 var oldcount = 0;
 var t;
@@ -75,7 +77,7 @@ var textareaheightfunc = (scrollval) => {
     messages.scrollTop = messages.scrollHeight;
     var h = 70;
     if(scrollval > 43){
-        messageinput.style.height = `${h + (scrollval + 20 - 42)}px`;
+        messageinput.style.height = `${h + (scrollval - 42)}px`;
         messages.style.bottom = messageinput.style.height;
         messages.scrollTop = messages.scrollHeight;
     }
@@ -172,12 +174,17 @@ var getonlinestatus = (other) => {
 }
 
 var retrievechats = (sender,receiver) => {
-    loader.classList.remove("none");
+    msginputcount = 0;
+    console.log("called retriever");
+    othermsgcount = 0;
+    loader1.classList.remove("none");
     axios.post("/retrievechats",{
         sender: sender,
         receiver: receiver
     }).then(result => {
-        loader.classList.add("none");
+        loader1.classList.add("none");
+        lastemail = result.data.chats[(result.data.chats.length - 1)].email;
+        console.log("lastemail ",lastemail);
         for(var i=0;i<result.data.chats.length;i++){
             const div1 = document.createElement("div");
             div1.setAttribute("class","eachmsg");
@@ -299,6 +306,7 @@ backbutton.addEventListener("click",(e) => {
     messages.innerHTML = "";
     chatroomemail = "";
     msginputcount = 0;
+    titlepre.innerText = "";
     getallchats();
 });
 logoutbutton.addEventListener("click",(e) => {
@@ -510,12 +518,14 @@ sendbutton.addEventListener("click",(e) => {
         divin.setAttribute("class","msg right");
         divin.textContent = msg;
         divmain.appendChild(divin);
-        if(msginputcount == 0){
+        if(msginputcount == 0 && lastemail == chatroomemail){
             divin.style.marginTop = "15px";
         }
-        messages.appendChild(divmain);
+        lastemail = loggedinemail;
+        console.log(lastemail);
         msginputcount += 1;
         othermsgcount = 0;
+        messages.appendChild(divmain);
         messages.scrollTop = messages.scrollHeight;
         msginput.value = "";
         textarea.style.height = "auto";
@@ -542,10 +552,13 @@ socket.on("livemsg",data => {
         div2.textContent = data.msg;
         div2.setAttribute("class","msg left");
         div1.appendChild(div2);
-        if(othermsgcount == 0){
+        if(othermsgcount == 0 && lastemail == loggedinemail){
             div2.style.marginTop = "15px";
-            othermsgcount += 1;
         }
+        lastemail = chatroomemail;
+        console.log(lastemail);
+        othermsgcount += 1;
+        msginputcount = 0;
         messages.appendChild(div1);
         messages.scrollTop = messages.scrollHeight;
     }
@@ -689,7 +702,7 @@ socket.on("callres",data => {
     }
 });
 
-socket.on("left",data => {
+socket.on("left",() => {
     topdiv.innerHTML = "";
     const newdiv = document.createElement("div");
     const newp = document.createElement("p");
