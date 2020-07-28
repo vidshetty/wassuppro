@@ -390,13 +390,10 @@ receivebutton.addEventListener("click",() => {
     callui.classList.remove("none");
     movefunction();
 });
-// textarea.addEventListener("focus",e => {
-//     textareaheightfunc(42);
-//     textarea.style.scrollHeight = 42;
-//     console.log(textarea.style.scrollHeight);
-// });
+console.log("window ",window.height," viewport ",viewport.height);
 window.onresize = function(){
     textareaheightfunc(42);
+    console.log("window ",window.height," viewport ",viewport.height);
 }
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
