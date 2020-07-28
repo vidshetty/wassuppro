@@ -644,9 +644,9 @@ socket.on("left",data => {
     newp.textContent = `${name} left`;
     newdiv.appendChild(newp);
     topdiv.appendChild(newdiv);
+    peer.destroy();
     setTimeout(() => {
         closefunc();
         topdiv.innerHTML = "";
-        peer.destroy();
     },2000);
 });
