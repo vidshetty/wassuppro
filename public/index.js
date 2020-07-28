@@ -391,7 +391,8 @@ receivebutton.addEventListener("click",() => {
     movefunction();
 });
 textarea.onfocus = function(e){
-    textareaheightfunc(e.currentTarget.scrollHeight);
+    // textareaheightfunc(e.currentTarget.scrollHeight);
+    console.log(e);
 }
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
