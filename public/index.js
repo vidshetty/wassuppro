@@ -390,6 +390,9 @@ receivebutton.addEventListener("click",() => {
     callui.classList.remove("none");
     movefunction();
 });
+textarea.onfocus = function(){
+    messages.scrollTop = messages.scrollHeight;
+}
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
