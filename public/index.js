@@ -75,18 +75,22 @@ var textareaheightfunc = (scrollval) => {
     if(scrollval > 43){
         messageinput.style.height = `${h + (scrollval + 20 - 42)}px`;
         messages.style.bottom = messageinput.style.height;
-        var mh = window.innerHeight * 0.82;
+        var mh = Math.floor(window.innerHeight * 0.82);
         messages.style.height = (mh - messageinput.style.height) + "px";
         console.log(messages.style.height);
     }
     else{
         messageinput.style.height = h + "px";
         messages.style.bottom = messageinput.style.height;
-        var mh = window.innerHeight * 0.82;
+        var mh = Math.floor(window.innerHeight * 0.82);
         messages.style.height = (mh - messageinput.style.height) + "px";
         console.log(messages.style.height);
     }
 }
+
+textarea.addEventListener("focus",() => {
+    textareaheightfunc(42);
+});
 
 var getallchats = () => {
     axios.post("/trial",{
