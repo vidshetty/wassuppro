@@ -75,16 +75,10 @@ var textareaheightfunc = (scrollval) => {
     if(scrollval > 43){
         messageinput.style.height = `${h + (scrollval + 20 - 42)}px`;
         messages.style.bottom = messageinput.style.height;
-        var mh = Math.floor(window.innerHeight * 0.82);
-        messages.style.height = (mh - messageinput.style.height) + "px";
-        console.log(messages.style.height);
     }
     else{
         messageinput.style.height = h + "px";
         messages.style.bottom = messageinput.style.height;
-        var mh = Math.floor(window.innerHeight * 0.82);
-        messages.style.height = (mh - messageinput.style.height) + "px";
-        console.log(messages.style.height);
     }
 }
 
@@ -396,14 +390,10 @@ receivebutton.addEventListener("click",() => {
     callui.classList.remove("none");
     movefunction();
 });
-console.log("window ",window.height);
 window.onresize = function(){
     textareaheightfunc(42);
     console.log("window ",window.height);
 }
-textarea.addEventListener("focus",() => {
-    textareaheightfunc(42);
-});
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";

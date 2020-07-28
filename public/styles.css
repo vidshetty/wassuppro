@@ -424,9 +424,9 @@ body{
     position: absolute;
     left: 0;
     bottom: 70px;
-    margin-top: 65px;
+    top: 65px;
     width: 100vw;
-    height: 82vh;
+    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
