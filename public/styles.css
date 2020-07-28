@@ -297,7 +297,7 @@ body{
 
 .search{
     width: 100%;
-    height: 10vh;
+    height: 81px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -370,7 +370,7 @@ body{
     top: 0;
     left: 0;
     width: 100%;
-    height: 8vh;
+    height: 65px;
     display: flex;
     z-index: 2000;
     background-color: #18171f;
@@ -383,13 +383,13 @@ body{
 .usertitle{
     width: 80vw;
     height: 100%;
-    padding-left: 20px;
+    /* padding-left: 20px; */
     padding-right: 20px;
     display: flex;
     justify-content: start;
     align-items: center;
 }
-.usertitle P{
+.usertitle p{
     color: white;
     font-size: 1.3em;
 }
@@ -421,7 +421,10 @@ body{
 }
 
 .messages{
-    margin-top: 8vh;
+    position: absolute;
+    left: 0;
+    bottom: 70px;
+    margin-top: 65px;
     width: 100vw;
     height: 82vh;
     overflow-y: auto;
@@ -435,7 +438,7 @@ body{
 }
 .msg{
     display: inline-block;
-    margin: 10px;
+    margin: 1px;
     padding: 10px;
     max-width: 300px;
     height: auto;
@@ -470,7 +473,7 @@ textarea{
     position: absolute;
     bottom: 15px;
     left: 10px;
-    width: 70%;
+    width: 80%;
     /* height: 50%; */
     background-color: #18171f;
     border: 1px solid white;
@@ -488,19 +491,24 @@ textarea:focus{
 }
 .sendbutton{
     position: absolute;
-    bottom: 15px;
+    bottom: 14px;
     right: 10px;
-    /* width: 20%; */
-    padding: 10px 18px 10px 18px;
-    background-color: #1414b8;
+    width: 42px;
+    height: 42px;
+    /* padding: 10px 18px 10px 18px; */
+    background-color: white;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 50%;
     font-size: 18px;
     font-family: "Google Sans",sans-serif;
 }
 .sendbutton:focus{
     outline: none;
+}
+.sendbutton img{
+    width: 110%;
+    height: 110%;
 }
 
 .addscreen{
@@ -599,18 +607,18 @@ textarea:focus{
     position: absolute;
     right: 30px;
     bottom: 30px;
-    height: 60px;
-    width: 100px;
+    height: 65px;
+    width: 65px;
     border: none;
-    border-radius: 40px;
+    border-radius: 50%;
     background-color: #1414b8;
-    color: white;
-    font-size: 1.2em;
-    font-family: "Google Sans",sans-serif;
-    font-weight: 400;
 }
 .logoutbutton:focus{
     outline: none;
+}
+.logoutbutton img{
+    width: 50%;
+    height: 50%;
 }
 
 @media screen and (max-height: 550px){

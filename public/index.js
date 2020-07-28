@@ -18,6 +18,9 @@ const bottomdiv = document.querySelector(".bottom");
 const mute = document.querySelector(".mute");
 const videomute = document.querySelector(".videomute");
 const close = document.querySelector(".close");
+var newcount = -1;
+var oldcount = 0;
+var t;
 var sent = "";
 var name = "";
 var loggedinemail = "";
@@ -67,12 +70,15 @@ else{
 
 
 var textareaheightfunc = (scrollval) => {
+    messages.scrollTop = messages.scrollHeight;
     var h = 70;
     if(scrollval > 43){
         messageinput.style.height = `${h + (scrollval + 20 - 42)}px`;
+        messages.style.bottom = messageinput.style.height;
     }
     else{
         messageinput.style.height = h + "px";
+        messages.style.bottom = messageinput.style.height;
     }
 }
 
@@ -84,7 +90,6 @@ var getallchats = () => {
         chatlist.innerText = "";
         if(result.data.length > 0){
             result.data.sort(compare);
-            console.log(result.data);
             result.data.forEach(element => {
                 if(element.val == 1){
                     const ul = document.createElement("ul");
@@ -129,6 +134,7 @@ var getallchats = () => {
                         usertitle.innerText = chatroomtitlename;
                         main.classList.add("none");
                         chatroom.classList.remove("none");
+                        textarea.style.height = "42px";
                         retrievechats(loggedinemail,chatroomemail);
                     });
                 }
@@ -206,11 +212,20 @@ function movefunction(){
     close.style.top = "30px";
     mute.style.bottom = "30px";
     videomute.style.bottom = "30px";
-    setTimeout(() => {
-        close.style.top = "-100px";
-        mute.style.bottom = "-100px";
-        videomute.style.bottom = "-100px"; 
-    },5000);
+    if(newcount > oldcount){
+        oldcount = newcount;
+        clearTimeout(t);
+        movefunction(newcount);
+    }
+    else{
+        t = setTimeout(() => {
+            close.style.top = "-100px";
+            mute.style.bottom = "-100px";
+            videomute.style.bottom = "-100px";
+            newcount = -1;
+            oldcount = 0;
+        },5000);
+    }
 }
 
 closefunc = () => {
@@ -221,15 +236,18 @@ closefunc = () => {
 
 
 topdiv.addEventListener("click",() => {
-    movefunction();
+    newcount +=1;
+    movefunction(newcount);
 });
 bottomdiv.addEventListener("click",() => {
-    movefunction();
+    newcount += 1;
+    movefunction(newcount);
 });
 addbutton.addEventListener("click",(e) => {
     main.classList.add("none");
     addscreen.classList.remove("none");
     searchinput.value = "";
+    searchinput.focus();
     resultlist.innerHTML = "";
 });
 cancelbutton.addEventListener("click",(e) => {
@@ -283,9 +301,9 @@ cutbutton.addEventListener("click",() => {
     sent = "sent";
 });
 mute.addEventListener("click",() => {
-    console.log("mute clicked");
+    newcount +=1;
+    movefunction(newcount);
     if(audiodisabled == "false"){
-        console.log("mute clicked");
         mute.style.backgroundColor = "red";
         audiodisabled = "true";
         ourstream.getAudioTracks()[0].enabled = false;
@@ -297,8 +315,9 @@ mute.addEventListener("click",() => {
     }
 });
 videomute.addEventListener("click",() => {
+    newcount +=1;
+    movefunction(newcount);
     if(videodisabled == "false"){
-        console.log("mute clicked");
         videomute.style.backgroundColor = "red";
         videodisabled = "true";
         ourstream.getVideoTracks()[0].enabled = false;
@@ -315,7 +334,6 @@ receivebutton.addEventListener("click",() => {
     peer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443});
     peer.on("open",id => {
         peerid = id;
-        console.log("peerid ",peerid);
         socket.emit("callres",{
             res: 1,
             peerid: peerid,
@@ -335,17 +353,6 @@ receivebutton.addEventListener("click",() => {
             bottomdiv.append(video);
         });
         peer.on("call",call => {
-            // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-            //     const video = document.createElement("video");
-            //     ourstream = stream;
-            //     video.srcObject = stream;
-            //     video.muted = true;
-            //     video.onloadedmetadata = () => {
-            //         video.play();
-            //     }
-            //     bottomdiv.append(video);
-            // });
-            console.log("peercall");
             call.answer(ourstream);
             const videotop = document.createElement("video");
             call.on("stream",stream2 => {
@@ -356,9 +363,6 @@ receivebutton.addEventListener("click",() => {
                 topdiv.append(videotop);
             });
             call.on("close",() => {
-                // videotop.remove();
-                // left();
-                console.log("close call");
                 ourstream.getTracks().forEach(track => {
                     track.stop();
                 });
@@ -452,7 +456,11 @@ msginput.addEventListener("keyup",(e) => {
 });
 sendbutton.addEventListener("click",(e) => {
     var msg = msginput.value;
-    if(msg != ""){
+    if(msg.match(/^[\s]*$/)){
+        msginput.value = "";
+        textareaheightfunc(textarea.scrollHeight);
+    }
+    else{
         var html = `
         <div class="eachmsg">
         <div class="msg right">
@@ -460,22 +468,23 @@ sendbutton.addEventListener("click",(e) => {
         </div>
         </div>`;
         messages.innerHTML += html;
-    }    
-    messages.scrollTop = messages.scrollHeight;
-    msginput.value = "";
-    textarea.style.height = "auto";
-    textareaheightfunc(textarea.scrollHeight);
-    socket.emit("sendmsg",{
-        sender: loggedinemail,
-        receiver: chatroomemail,
-        message: msg
-    });
-    socket.emit("typing?",{
-        sender: loggedinemail,
-        receiver: chatroomemail,
-        val: "stopped"
-    });
+        messages.scrollTop = messages.scrollHeight;
+        msginput.value = "";
+        textarea.style.height = "auto";
+        textareaheightfunc(textarea.scrollHeight);
+        socket.emit("sendmsg",{
+            sender: loggedinemail,
+            receiver: chatroomemail,
+            message: msg
+        });
+        socket.emit("typing?",{
+            sender: loggedinemail,
+            receiver: chatroomemail,
+            val: "stopped"
+        });
+    }
 });
+
 
 socket.on("livemsg",data => {
     if(chatroomemail == data.sender){
@@ -523,6 +532,15 @@ socket.on("confirm",() => {
     getallchats();
 });
 
+socket.on("callrequest",data => {
+    if(data.req == -1){  
+        p.children[0].innerText = "offline";
+        setTimeout(() => {
+            callermodal.classList.add("none");
+        },2000);
+    }
+});
+
 socket.on("callreq",data => {
     if(data.req == 0){
         p1.children[0].innerText = "caller left";
@@ -549,7 +567,7 @@ socket.on("callreq",data => {
                 receiver: loggedinemail
             });
             receivermodal.classList.add("none");
-        },45000);
+        },30000);
     }
 });
 
@@ -581,7 +599,6 @@ socket.on("callres",data => {
         peer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443});
         peer.on("open",id => {
             peerid = id;
-            console.log("peerid ",peerid);
             navigator.mediaDevices.getUserMedia(constraints).then(stream => {
                 const video = document.createElement("video");
                 ourstream = stream;
@@ -601,8 +618,6 @@ socket.on("callres",data => {
                     topdiv.append(videotop);
                 });
                 call.on("close",() => {
-                    // left();
-                    console.log("close call");
                     ourstream.getTracks().forEach(track => {
                         track.stop();
                     });
@@ -623,7 +638,6 @@ socket.on("callres",data => {
 });
 
 socket.on("left",data => {
-    console.log("close call");
     topdiv.innerHTML = "";
     const newdiv = document.createElement("div");
     const newp = document.createElement("p");
