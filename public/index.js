@@ -726,3 +726,14 @@ socket.on("left",() => {
         topdiv.innerHTML = "";
     },2000);
 });
+
+document.addEventListener("visibilitychange",() => {
+    if(document.visibilityState == "hidden"){
+        socket.disconnect();
+        console.log("socket disconnected");
+    }
+    else{
+        socket.connect();
+        console.log("socket connected");
+    }
+});
