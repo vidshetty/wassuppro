@@ -443,7 +443,7 @@ receivebutton.addEventListener("click",() => {
     mute.style.backgroundColor = "#18171f";
     videomute.style.backgroundColor = "#18171f";
     callui.classList.remove("none");
-    movefunction();
+    // movefunction();
 });
 window.onresize = function(){
     textareaheightfunc(42);
