@@ -279,7 +279,10 @@ io.on("connection",socket => {
 
     socket.on("onconnect",data => {
         LoggedInUsers.findOneAndUpdate({email: data.email},{status: "online",socketid: socket.id},{new:true}).then(doc => {
-            console.log("now online");
+            socket.broadcast.emit("statusres",{
+                email: doc.email,
+                status: doc.status
+            });
         });
     });
 

@@ -738,5 +738,7 @@ document.addEventListener("visibilitychange",() => {
         socket.emit("onconnect",{
             email: loggedinemail
         });
+        getallchats();
+        retrievechats(loggedinemail,chatroomemail);
     }
 });
