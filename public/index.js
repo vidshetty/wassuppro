@@ -38,7 +38,8 @@ var videodisabled = "false";
 var videocaller = "";
 var videoreceiver = "";
 var peerid = "";
-var call,peer,ourstream;
+var call,peer;
+var ourstream = null;
 var constraints = {
     video: true,
     audio: true
@@ -419,6 +420,7 @@ receivebutton.addEventListener("click",() => {
                 ourstream.getTracks().forEach(track => {
                     track.stop();
                 });
+                ourstream = null;
                 socket.emit("left",{
                     left: "receiver",
                     caller: videocaller,
@@ -697,6 +699,7 @@ socket.on("callres",data => {
                     ourstream.getTracks().forEach(track => {
                         track.stop();
                     });
+                    ourstream = null;
                 });
             });
             close.addEventListener("click",() => {
@@ -729,6 +732,15 @@ socket.on("left",() => {
 
 document.addEventListener("visibilitychange",() => {
     if(document.visibilityState == "hidden"){
+        if(ourstream != null){
+            peer.destroy();
+            closefunc();
+            socket.emit("left",{
+                left: "caller",
+                caller: videocaller,
+                receiver: videoreceiver
+            });
+        }
         socket.disconnect();
         console.log("socket disconnected");
     }
