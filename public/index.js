@@ -735,5 +735,8 @@ document.addEventListener("visibilitychange",() => {
     else{
         socket.connect();
         console.log("socket connected");
+        socket.emit("onconnect"{
+            email: loggedinemail
+        });
     }
 });

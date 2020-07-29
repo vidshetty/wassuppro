@@ -277,6 +277,12 @@ io.on("connection",socket => {
         }
     });
 
+    socket.on("onconnect",data => {
+        LoggedInUsers.findOneAndUpdate({email: data.email},{status: "online"},{new:true}).then(doc => {
+            console.log("now online");
+        });
+    });
+
     socket.on("disconnect",() => {
         LoggedInUsers.findOneAndUpdate({socketid: socket.id},{status: "offline"},{new:true}).then((doc) => {
             socket.broadcast.emit("statusres",{
