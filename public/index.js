@@ -365,7 +365,7 @@ mute.addEventListener("click",() => {
 });
 videomute.addEventListener("click",() => {
     newcount +=1;
-    // movefunction(newcount);
+    movefunction(newcount);
     if(videodisabled == "false"){
         videomute.style.backgroundColor = "red";
         videodisabled = "true";
@@ -712,7 +712,7 @@ socket.on("callres",data => {
                 });
             });
         });
-        movefunction();
+        // movefunction();
     }
 });
 
