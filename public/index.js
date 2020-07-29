@@ -23,6 +23,8 @@ var lastemail = "";
 var newcount = -1;
 var oldcount = 0;
 var t;
+var maintime;
+var browser = "";
 var mainvalue = null;
 var msginputcount = 0;
 var othermsgcount = 0;
@@ -71,7 +73,17 @@ else{
             chatlist.appendChild(div);
             addbutton.style.display = "none";
         }
+        socket.emit("setstream",{
+            email: loggedinemail
+        });
+        checkbrowser();
     });
+}
+
+checkbrowser = () => {
+    if(navigator.vendor == "Google Inc."){
+        browser == "Chrome";
+    }
 }
 
 
@@ -184,24 +196,40 @@ var retrievechats = (sender,receiver) => {
         receiver: receiver
     }).then(result => {
         loader1.classList.add("none");
-        lastemail = result.data.chats[(result.data.chats.length - 1)].email;
-        for(var i=0;i<result.data.chats.length;i++){
-            const div1 = document.createElement("div");
-            div1.setAttribute("class","eachmsg");
-            const div2 = document.createElement("div");
-            div2.textContent = result.data.chats[i].msg;
-            if(i>0){
-                if(result.data.chats[i-1].email != result.data.chats[i].email){
-                    if(sender == result.data.chats[i].email){
-                        div2.setAttribute("class","msg right");
-                        div2.style.marginTop = "15px";
+        if(result.data.chats != "no chats"){
+            lastemail = result.data.chats[(result.data.chats.length - 1)].email;
+            for(var i=0;i<result.data.chats.length;i++){
+                const div1 = document.createElement("div");
+                div1.setAttribute("class","eachmsg");
+                const div2 = document.createElement("div");
+                div2.textContent = result.data.chats[i].msg;
+                if(i>0){
+                    if(result.data.chats[i-1].email != result.data.chats[i].email){
+                        if(sender == result.data.chats[i].email){
+                            div2.setAttribute("class","msg right");
+                            div2.style.marginTop = "15px";
+                        }
+                        else{
+                            div2.setAttribute("class","msg left");
+                            div2.style.marginTop = "15px";
+                        }
+                        div1.appendChild(div2);
+                        messages.appendChild(div1);
                     }
                     else{
-                        div2.setAttribute("class","msg left");
-                        div2.style.marginTop = "15px";
+                        const div1 = document.createElement("div");
+                        div1.setAttribute("class","eachmsg");
+                        const div2 = document.createElement("div");
+                        div2.textContent = result.data.chats[i].msg;
+                        if(sender == result.data.chats[i].email){
+                            div2.setAttribute("class","msg right");
+                        }
+                        else{
+                            div2.setAttribute("class","msg left");
+                        }
+                        div1.appendChild(div2);
+                        messages.appendChild(div1);
                     }
-                    div1.appendChild(div2);
-                    messages.appendChild(div1);
                 }
                 else{
                     const div1 = document.createElement("div");
@@ -217,23 +245,9 @@ var retrievechats = (sender,receiver) => {
                     div1.appendChild(div2);
                     messages.appendChild(div1);
                 }
-            }
-            else{
-                const div1 = document.createElement("div");
-                div1.setAttribute("class","eachmsg");
-                const div2 = document.createElement("div");
-                div2.textContent = result.data.chats[i].msg;
-                if(sender == result.data.chats[i].email){
-                    div2.setAttribute("class","msg right");
-                }
-                else{
-                    div2.setAttribute("class","msg left");
-                }
-                div1.appendChild(div2);
-                messages.appendChild(div1);
-            }
-            messages.scrollTop = messages.scrollHeight;
-        };
+                messages.scrollTop = messages.scrollHeight;
+            };
+        }
     });
     getonlinestatus(receiver);
 }
@@ -320,11 +334,29 @@ videocamera.addEventListener("click",() => {
     callermodal.classList.remove("none");
     p.children[0].innerText = "calling....";
     p.children[1].innerText = chatroomtitlename;
-    socket.emit("callreq",{
-        req: 1,
-        caller: loggedinemail,
-        callername: loggedinname,
-        receiver: chatroomemail
+    socket.emit("interrupt",{
+        email: chatroomemail
+    });
+    socket.on("interruptres",data => {
+        if(data.res == "go ahead"){
+            socket.emit("callreq",{
+                req: 1,
+                caller: loggedinemail,
+                callername: loggedinname,
+                receiver: chatroomemail
+            });
+            socket.emit("videocall",{
+                call: 1,
+                email: loggedinemail
+            });
+        }
+        else{
+            p.children[0].innerText = "busy";
+            setTimeout(() => {
+                p.children[0].innerText = "";
+                callermodal.classList.add("none");
+            },2000);
+        }
     });
 });
 endbutton.addEventListener("click",() => {
@@ -336,14 +368,23 @@ endbutton.addEventListener("click",() => {
         callername: loggedinname,
         receiver: chatroomemail
     });
+    socket.emit("videocall",{
+        call: 0,
+        email: loggedinemail
+    });
 });
 cutbutton.addEventListener("click",() => {
+    clearTimeout(maintime);
     p1.children[1].innerText = "";
     receivermodal.classList.add("none");
     socket.emit("callres",{
         res: 0,
         caller: randomvar,
         receiver: loggedinemail
+    });
+    socket.emit("videocall",{
+        call: 0,
+        email: loggedinemail
     });
     sent = "sent";
 });
@@ -376,9 +417,12 @@ videomute.addEventListener("click",() => {
     }
 });
 receivebutton.addEventListener("click",() => {
-    navigator.wakeLock.request("screen").then(lock => {
-        mainvalue = lock;
-    });
+    if(browser == "Chrome"){
+        navigator.wakeLock.request("screen").then(lock => {
+            mainvalue = lock;
+        });
+    }
+    clearTimeout(maintime);
     p1.children[1].innerText = "";
     receivermodal.classList.add("none");
     peer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443});
@@ -403,6 +447,16 @@ receivebutton.addEventListener("click",() => {
             bottomdiv.append(video);
         });
         peer.on("call",call => {
+            // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+            //     const video = document.createElement("video");
+            //     ourstream = stream;
+            //     video.srcObject = stream;
+            //     video.muted = true;
+            //     video.onloadedmetadata = () => {
+            //         video.play();
+            //     }
+            //     bottomdiv.append(video);
+            // });
             call.answer(ourstream);
             const videotop = document.createElement("video");
             call.on("stream",stream2 => {
@@ -413,20 +467,32 @@ receivebutton.addEventListener("click",() => {
                 topdiv.append(videotop);
             });
             call.on("close",() => {
-                mainvalue.release();
-                mainvalue = null;
-                ourstream.getTracks().forEach(track => {
-                    track.stop();
-                });
-                ourstream = null;
+                if(browser == "Chrome"){
+                    mainvalue.release();
+                    mainvalue = null;
+                }
+                if(ourstream != null){
+                    ourstream.getTracks().forEach(track => {
+                        track.stop();
+                    });
+                    ourstream = null;
+                }
                 socket.emit("left",{
                     left: "receiver",
                     caller: videocaller,
                     receiver: videoreceiver
                 });
+                socket.emit("videocall",{
+                    call: 0,
+                    email: loggedinemail
+                });
             });
         });
         close.addEventListener("click",() => {
+            ourstream.getTracks().forEach(track => {
+                track.stop();
+            });
+            ourstream = null;
             peer.destroy();
             closefunc();
             socket.emit("left",{
@@ -613,6 +679,10 @@ socket.on("callreq",data => {
         p1.children[0].innerText = "caller left";
         videocaller = "";
         videoreceiver = "";
+        socket.emit("videocall",{
+            call: 0,
+            email: loggedinemail
+        });
         setTimeout(() => {
             p.children[0].innerText = "";
             receivermodal.classList.add("none");
@@ -627,11 +697,19 @@ socket.on("callreq",data => {
         p1.children[1].innerText = data.callername;
         videocaller = data.caller;
         videoreceiver = data.receiver;
-        setTimeout(() => {
+        socket.emit("videocall",{
+            call: 1,
+            email: loggedinemail
+        });
+        maintime = setTimeout(() => {
             socket.emit("callres",{
                 res: -1,
                 caller: randomvar,
                 receiver: loggedinemail
+            });
+            socket.emit("videocall",{
+                call: 0,
+                email: loggedinemail
             });
             receivermodal.classList.add("none");
         },30000);
@@ -641,6 +719,10 @@ socket.on("callreq",data => {
 socket.on("callres",data => {
     if(data.res == 0){
         p.children[0].innerText = "call declined";
+        socket.emit("videocall",{
+            call: 0,
+            email: loggedinemail
+        });
         setTimeout(() => {
             p.children[0].innerText = "";
             callermodal.classList.add("none");
@@ -648,6 +730,10 @@ socket.on("callres",data => {
     }
     else if(data.res == -1){
         p.children[0].innerText = "no response";
+        socket.emit("videocall",{
+            call: 0,
+            email: loggedinemail
+        });
         setTimeout(() => {
             p.children[0].innerText = "";
             callermodal.classList.add("none");
@@ -676,27 +762,45 @@ socket.on("callres",data => {
                 }
                 bottomdiv.append(video);
                 const videotop = document.createElement("video");
-                call = peer.call(data.peerid,stream);
-                navigator.wakeLock.request("screen").then(lock => {
-                    mainvalue = lock;
+                var call1 = peer.call(data.peerid,stream);
+                socket.emit("videocall",{
+                    call: 1,
+                    email: loggedinemail
                 });
-                call.on("stream",stream2 => {
+                if(browser == "Chrome"){
+                    navigator.wakeLock.request("screen").then(lock => {
+                        mainvalue = lock;
+                    });
+                }
+                call1.on("stream",stream2 => {
                     videotop.srcObject = stream2;
                     videotop.onloadedmetadata = () => {
                         videotop.play();
                     }
                     topdiv.append(videotop);
                 });
-                call.on("close",() => {
-                    mainvalue.release();
-                    mainvalue = null;
-                    ourstream.getTracks().forEach(track => {
-                        track.stop();
+                call1.on("close",() => {
+                    if(browser == "Chrome"){
+                        mainvalue.release();
+                        mainvalue = null;
+                    }
+                    if(ourstream != null){
+                        ourstream.getTracks().forEach(track => {
+                            track.stop();
+                        });
+                        ourstream = null;
+                    }
+                    socket.emit("videocall",{
+                        call: 0,
+                        email: loggedinemail
                     });
-                    ourstream = null;
                 });
             });
             close.addEventListener("click",() => {
+                ourstream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                ourstream = null;
                 peer.destroy();
                 closefunc();
                 socket.emit("left",{

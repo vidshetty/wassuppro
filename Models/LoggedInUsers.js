@@ -6,6 +6,10 @@ const LoggedInUserSchema = new mongoose.Schema({
     status:{
         type: String,
         default: "offline"
+    },
+    videocall: {
+        type: String,
+        default: "nostream"
     }
 });
 

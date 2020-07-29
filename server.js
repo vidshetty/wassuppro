@@ -121,28 +121,28 @@ var findnewMessage = (num,data,socket) => {
 
 var mailer = (req) => {
     randomotp = generateotp();
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'wassupnode@gmail.com',
-          pass: 'itsmeWASSUP@1998'
-        }
-    });
+    // var transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //       user: 'wassupnode@gmail.com',
+    //       pass: 'itsmeWASSUP@1998'
+    //     }
+    // });
       
-    var mailOptions = {
-        from: 'wassupnode@gmail.com',
-        to: req.body.email,
-        subject: 'Verification mail from Wassup!',
-        text: `Your verification password is "${randomotp}". Do not reply or forward this mail.` 
-    };
+    // var mailOptions = {
+    //     from: 'wassupnode@gmail.com',
+    //     to: req.body.email,
+    //     subject: 'Verification mail from Wassup!',
+    //     text: `Your verification password is "${randomotp}". Do not reply or forward this mail.` 
+    // };
       
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent:');
-        }
-    });
+    // transporter.sendMail(mailOptions, function(error, info){
+    //     if (error) {
+    //       console.log(error);
+    //     } else {
+    //       console.log('Email sent:');
+    //     }
+    // });
 }
 
 io.on("connection",socket => {
@@ -274,6 +274,34 @@ io.on("connection",socket => {
                     receiver: data.receiver
                 });
             });
+        }
+    });
+
+    socket.on("setstream",data => {
+        LoggedInUsers.findOneAndUpdate({email: data.email},{videocall: "nostream"}).then(() => {});
+    });
+
+    socket.on("interrupt",data => {
+        LoggedInUsers.findOne({email: data.email}).then(doc => {
+            if(doc.videocall == "streaming"){
+                socket.emit("interruptres",{
+                    res: "busy"
+                });
+            }
+            else{
+                socket.emit("interruptres",{
+                    res: "go ahead"
+                });
+            }
+        });
+    });
+
+    socket.on("videocall",data => {
+        if(data.call == 1){
+            LoggedInUsers.findOneAndUpdate({email: data.email},{videocall: "streaming"}).then(() => {});
+        }
+        else{
+            LoggedInUsers.findOneAndUpdate({email: data.email},{videocall: "nostream"}).then(() => {});
         }
     });
 
@@ -429,11 +457,15 @@ app.post("/searchuser",(req,res) => {
 
 app.post("/retrievechats",(req,res) => {
     Messages.find().then(docs => {
+        var i = 0;
         for(var i=0;i<docs.length;i++){
             if((docs[i].users[0] == req.body.sender && docs[i].users[1] == req.body.receiver) || (docs[i].users[0] == req.body.receiver && docs[i].users[1] == req.body.sender)){
                 res.send({chats: docs[i].msg});                
             }
         };
+        if(i == docs.length){
+            res.send({chats: "no chats"});
+        }
     });
 });
 
