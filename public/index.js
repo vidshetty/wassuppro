@@ -177,7 +177,6 @@ var getonlinestatus = (other) => {
 
 var retrievechats = (sender,receiver) => {
     msginputcount = 0;
-    console.log("called retriever");
     othermsgcount = 0;
     loader1.classList.remove("none");
     axios.post("/retrievechats",{
@@ -186,7 +185,6 @@ var retrievechats = (sender,receiver) => {
     }).then(result => {
         loader1.classList.add("none");
         lastemail = result.data.chats[(result.data.chats.length - 1)].email;
-        console.log("lastemail ",lastemail);
         for(var i=0;i<result.data.chats.length;i++){
             const div1 = document.createElement("div");
             div1.setAttribute("class","eachmsg");
@@ -443,11 +441,9 @@ receivebutton.addEventListener("click",() => {
     mute.style.backgroundColor = "#18171f";
     videomute.style.backgroundColor = "#18171f";
     callui.classList.remove("none");
-    // movefunction();
 });
 window.onresize = function(){
     textareaheightfunc(42);
-    console.log("window ",window.height);
 }
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
@@ -530,7 +526,6 @@ sendbutton.addEventListener("click",(e) => {
             divin.style.marginTop = "15px";
         }
         lastemail = loggedinemail;
-        console.log(lastemail);
         msginputcount += 1;
         othermsgcount = 0;
         messages.appendChild(divmain);
@@ -564,7 +559,6 @@ socket.on("livemsg",data => {
             div2.style.marginTop = "15px";
         }
         lastemail = chatroomemail;
-        console.log(lastemail);
         othermsgcount += 1;
         msginputcount = 0;
         messages.appendChild(div1);
@@ -712,7 +706,6 @@ socket.on("callres",data => {
                 });
             });
         });
-        // movefunction();
     }
 });
 
@@ -742,11 +735,9 @@ document.addEventListener("visibilitychange",() => {
             });
         }
         socket.disconnect();
-        console.log("socket disconnected");
     }
     else{
         socket.connect();
-        console.log("socket connected");
         socket.emit("onconnect",{
             email: loggedinemail
         });
