@@ -50,11 +50,11 @@ self.addEventListener("notificationclick",e => {
     if(e.notification.data.message == "text"){
         if(e.action == "reply"){
             e.notification.close();
-            clients.openWindow("https://videocalltesting.herokuapp.com");
+            clients.openWindow("https://wassuppro.herokuapp.com");
         }
         else if(e.action == "close"){}
         else{
-            clients.openWindow("https://videocalltesting.herokuapp.com");
+            clients.openWindow("https://wassuppro.herokuapp.com");
         }
         e.notification.close();
     }
