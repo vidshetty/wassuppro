@@ -14,6 +14,14 @@ const LoggedInUserSchema = new mongoose.Schema({
     subscription: {
         type: Array,
         default: []
+    },
+    textnotification: {
+        type: Array,
+        default: []
+    },
+    videonotification: {
+        type: Array,
+        default: []
     }
 });
 

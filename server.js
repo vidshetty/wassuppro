@@ -12,9 +12,17 @@ const NewMessages = require("./Models/NewMessages");
 const LoggedInUsers = require("./Models/LoggedInUsers");
 const nodemailer = require("nodemailer");
 const { v4:uuidv4 } = require("uuid");
+var push = require("web-push");
 const PORT = process.env.PORT || 8000;
 var randomotp = 0;
 var account = [];
+
+var keys = {
+    publicKey: 'BEcF57uMF5LyK9boqYxf-9q21GdcWX707xxPz-MWieIhCI4lwBCgP9xtxWeYq632HaR0b9mwI9GW1dxs6r2zoV0',
+    privateKey: 'PE4b8oi4JZyIqcCh6yFAt7uU_flRI7_of8nbKVkPgBE'
+}
+
+push.setVapidDetails("mailto:test@test.com",keys.publicKey,keys.privateKey);
 
 mongoose.connect("mongodb+srv://vid_shetty:itsmemongodb1998@tictactoe.jfyxk.mongodb.net/wassup?retryWrites=true&w=majority",{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.once("open",() => {
@@ -183,6 +191,32 @@ io.on("connection",socket => {
         });
     });
 
+    socket.on("notify",data => {
+        var counter = 0;
+        LoggedInUsers.findOne({email: data.receiver}).then(doc => {
+            if(doc.status == "offline"){
+                for(var i=0;i<doc.textnotification.length;i++){
+                    if(doc.textnotification[i] == data.sender){
+                        counter += 1;
+                    }
+                }
+                if(counter == 0){
+                    var payload = JSON.stringify({
+                        title: data.sendername,
+                        type: "text",
+                        msg: data.message
+                    });
+                    var subscription = JSON.parse(doc.subscription[0]);
+                    push.sendNotification(subscription,payload);
+                    var newnotify = doc.textnotification;
+                    newnotify.push(data.sender);
+                    LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
+                    .then(() => {});
+                }
+            }
+        });
+    });
+
     socket.on("addingnewmsg",data => {
         findnewMessage(-1,data,socket);
     });
@@ -236,6 +270,23 @@ io.on("connection",socket => {
                 });
             }
             else{
+                var counter = 0;
+                for(var i=0;i<result.videonotification.length;i++){
+                    if(result.videonotification[i] == data.caller){
+                        counter += 1;
+                    }
+                }
+                if(counter == 0){
+                    var newarr = result.videonotification;
+                    newarr.push(data.caller);
+                    var payload = JSON.stringify({
+                        title: data.callername,
+                        type: "video"
+                    });
+                    var subscription = JSON.parse(result.subscription[0]);
+                    push.sendNotification(subscription,payload);
+                    LoggedInUsers.findOneAndUpdate({email:data.receiver},{videonotification: newarr},{new:true}).then(()=>{});
+                }
                 socket.emit("callrequest",{
                     req: -1
                 });
@@ -244,7 +295,6 @@ io.on("connection",socket => {
     });
 
     socket.on("callres",data => {
-        console.log(data);
         LoggedInUsers.findOne({email: data.caller}).then(result => {
             io.to(result.socketid).emit("callres",{
                 res: data.res,
@@ -282,8 +332,26 @@ io.on("connection",socket => {
     });
 
     socket.on("interrupt",data => {
-        LoggedInUsers.findOne({email: data.email}).then(doc => {
+        LoggedInUsers.findOne({email: data.receiver}).then(doc => {
             if(doc.videocall == "streaming"){
+                var counter = 0;
+                for(var i=0;i<doc.videonotification.length;i++){
+                    if(doc.videonotification[i] == data.caller){
+                        counter += 1;
+                    }
+                }
+                if(counter == 0){
+                    var newarr = [];
+                    newarr = doc.videonotification;
+                    newarr.push(data.sender);
+                    var payload = JSON.stringify({
+                        title: data.sendername,
+                        type: "video"
+                    });
+                    var subscription = JSON.parse(doc.subscription[0]);
+                    push.sendNotification(subscription,payload);
+                    LoggedInUsers.findOneAndUpdate({email:data.receiver},{videonotification: newarr},{new:true}).then(()=>{});
+                }
                 socket.emit("interruptres",{
                     res: "busy"
                 });
@@ -306,7 +374,7 @@ io.on("connection",socket => {
     });
 
     socket.on("onconnect",data => {
-        LoggedInUsers.findOneAndUpdate({email: data.email},{status: "online",socketid: socket.id},{new:true}).then(doc => {
+        LoggedInUsers.findOneAndUpdate({email: data.email},{status: "online",socketid: socket.id,textnotification: [],videonotification:[]},{new:true}).then(doc => {
             socket.broadcast.emit("statusres",{
                 email: doc.email,
                 status: doc.status
@@ -457,16 +525,17 @@ app.post("/searchuser",(req,res) => {
 
 app.post("/retrievechats",(req,res) => {
     Messages.find().then(docs => {
-        var i = 0;
+        var counter = 0;
         for(var i=0;i<docs.length;i++){
             if((docs[i].users[0] == req.body.sender && docs[i].users[1] == req.body.receiver) || (docs[i].users[0] == req.body.receiver && docs[i].users[1] == req.body.sender)){
-                res.send({chats: docs[i].msg});                
+                res.send({chats: docs[i].msg});
+                counter += 1;                
             }
         };
-        if(i == docs.length){
+        if(counter == 0){
             res.send({chats: "no chats"});
         }
-    });
+    }).catch(err => console.log("ignore"));
 });
 
 app.post("/onlinestatus",(req,res) => {
@@ -582,7 +651,9 @@ app.post("/check1",(req,res) => {
 app.post("/subscribe",(req,res) => {
     var subobj = [];
     subobj.push(req.body.data);
-    LoggedInUsers.findOneAndUpdate({email: req.body.email},{subscription: subobj},{new:true}).then(() => {});
+    LoggedInUsers.findOneAndUpdate({email: req.body.email},{subscription: subobj},{new:true}).then(() => {
+        res.send("Success");
+    });
 });
 
 server.listen(PORT,() => { console.log("Server running on  port " + PORT) });

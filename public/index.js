@@ -72,6 +72,9 @@ else{
             div.textContent = "You're logged in on another device";
             chatlist.appendChild(div);
             addbutton.style.display = "none";
+            setTimeout(() => {
+                window.location = "./login.html";
+            },2000);
         }
         socket.emit("setstream",{
             email: loggedinemail
@@ -335,28 +338,9 @@ videocamera.addEventListener("click",() => {
     p.children[0].innerText = "calling....";
     p.children[1].innerText = chatroomtitlename;
     socket.emit("interrupt",{
-        email: chatroomemail
-    });
-    socket.on("interruptres",data => {
-        if(data.res == "go ahead"){
-            socket.emit("callreq",{
-                req: 1,
-                caller: loggedinemail,
-                callername: loggedinname,
-                receiver: chatroomemail
-            });
-            socket.emit("videocall",{
-                call: 1,
-                email: loggedinemail
-            });
-        }
-        else{
-            p.children[0].innerText = "busy";
-            setTimeout(() => {
-                p.children[0].innerText = "";
-                callermodal.classList.add("none");
-            },2000);
-        }
+        receiver: chatroomemail,
+        sender: loggedinemail,
+        sendername: loggedinname
     });
 });
 endbutton.addEventListener("click",() => {
@@ -447,16 +431,6 @@ receivebutton.addEventListener("click",() => {
             bottomdiv.append(video);
         });
         peer.on("call",call => {
-            // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-            //     const video = document.createElement("video");
-            //     ourstream = stream;
-            //     video.srcObject = stream;
-            //     video.muted = true;
-            //     video.onloadedmetadata = () => {
-            //         video.play();
-            //     }
-            //     bottomdiv.append(video);
-            // });
             call.answer(ourstream);
             const videotop = document.createElement("video");
             call.on("stream",stream2 => {
@@ -604,6 +578,12 @@ sendbutton.addEventListener("click",(e) => {
             receiver: chatroomemail,
             message: msg
         });
+        socket.emit("notify",{
+            sender: loggedinemail,
+            receiver: chatroomemail,
+            sendername: loggedinname,
+            message: msg
+        });
         socket.emit("typing?",{
             sender: loggedinemail,
             receiver: chatroomemail,
@@ -668,6 +648,10 @@ socket.on("confirm",() => {
 socket.on("callrequest",data => {
     if(data.req == -1){  
         p.children[0].innerText = "offline";
+        socket.emit("videocall",{
+            call: 0,
+            email: loggedinemail
+        });
         setTimeout(() => {
             callermodal.classList.add("none");
         },2000);
@@ -855,5 +839,27 @@ document.addEventListener("visibilitychange",() => {
         else{
             getallchats();
         }
+    }
+});
+
+socket.on("interruptres",data => {
+    if(data.res == "go ahead"){
+        socket.emit("callreq",{
+            req: 1,
+            caller: loggedinemail,
+            callername: loggedinname,
+            receiver: chatroomemail
+        });
+        socket.emit("videocall",{
+            call: 1,
+            email: loggedinemail
+        });
+    }
+    else{
+        p.children[0].innerText = "busy";
+        setTimeout(() => {
+            p.children[0].innerText = "";
+            callermodal.classList.add("none");
+        },2000);
     }
 });

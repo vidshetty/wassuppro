@@ -53,23 +53,24 @@ loginform.addEventListener("submit",(e) => {
             loader.classList.add("none");
             loginform.reset();
             if(result.data.msg == "success"){
-                if(Notification.permission != "granted"){
                     if("serviceWorker" in navigator){
                         navigator.serviceWorker.register("./sw.js").then(sw => {
                             sw.pushManager.subscribe({
                                 userVisibleOnly: true,
                                 applicationServerKey: urlBase64ToUint8Array(pubkey)
                             }).then(subs => {
-                                axios.post("/subscribe",{
-                                    data: JSON.stringify(subs),
-                                    email: emailid
-                                }).then(() => {});
+                                if(Notification.permission == "granted"){
+                                    axios.post("/subscribe",{
+                                        data: JSON.stringify(subs),
+                                        email: emailid
+                                    }).then(data => {
+                                        localStorage.setItem("token",result.data.token);
+                                        window.location = "./index.html";
+                                    });
+                                }
                             });
                         });
                     }
-                }
-                localStorage.setItem("token",result.data.token);
-                window.location = "./index.html";
             }
             else{
                 title.innerText = "invalid OTP";
