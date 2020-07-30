@@ -121,28 +121,28 @@ var findnewMessage = (num,data,socket) => {
 
 var mailer = (req) => {
     randomotp = generateotp();
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'wassupnode@gmail.com',
-          pass: 'itsmeWASSUP@1998'
-        }
-    });
+    // var transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //       user: 'wassupnode@gmail.com',
+    //       pass: 'itsmeWASSUP@1998'
+    //     }
+    // });
       
-    var mailOptions = {
-        from: 'wassupnode@gmail.com',
-        to: req.body.email,
-        subject: 'Verification mail from Wassup!',
-        text: `Your verification password is "${randomotp}". Do not reply or forward this mail.` 
-    };
+    // var mailOptions = {
+    //     from: 'wassupnode@gmail.com',
+    //     to: req.body.email,
+    //     subject: 'Verification mail from Wassup!',
+    //     text: `Your verification password is "${randomotp}". Do not reply or forward this mail.` 
+    // };
       
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent:');
-        }
-    });
+    // transporter.sendMail(mailOptions, function(error, info){
+    //     if (error) {
+    //       console.log(error);
+    //     } else {
+    //       console.log('Email sent:');
+    //     }
+    // });
 }
 
 io.on("connection",socket => {
@@ -577,6 +577,12 @@ app.post("/check",(req,res) => {
 
 app.post("/check1",(req,res) => {
     res.send({val: "check1response"});
+});
+
+app.post("/subscribe",(req,res) => {
+    var subobj = [];
+    subobj.push(req.body.data);
+    LoggedInUsers.findOneAndUpdate({email: req.body.email},{subscription: subobj},{new:true}).then(() => {});
 });
 
 server.listen(PORT,() => { console.log("Server running on  port " + PORT) });

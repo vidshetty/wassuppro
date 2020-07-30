@@ -10,6 +10,10 @@ const LoggedInUserSchema = new mongoose.Schema({
     videocall: {
         type: String,
         default: "nostream"
+    },
+    subscription: {
+        type: Array,
+        default: []
     }
 });
 
