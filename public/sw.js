@@ -4,55 +4,30 @@ self.addEventListener('push',e => {
     if(obj.type == "text"){
         var title = obj.title;
         var completemsg = "";
-        var i = 0;
-        for(i=0;i<obj.body;i++){
+        for(var i=0;i<obj.body.length;i++){
             completemsg += `${obj.body[i]}\n`;
         }
-        if(i == obj.body){
-            console.log("completemsg ",completemsg);
-            var options = {
-                body: `${completemsg}`,
-                icon: "./icons8-hangouts-512.png",
-                badge: "./icons8-hangouts-96.png",
-                data: {
-                    message: "text"
+        var options = {
+            body: `${completemsg}`,
+            icon: "./icons8-hangouts-512.png",
+            badge: "./icons8-hangouts-96.png",
+            data: {
+                message: "text"
+            },
+            actions:[
+                {
+                    action: "reply",
+                    title: "Reply"
                 },
-                actions:[
-                    {
-                        action: "reply",
-                        title: "Reply"
-                    },
-                    {
-                        action: "close",
-                        title: "Dismiss"
-                    }
-                ]
-            };
-            e.waitUntil(
-                self.registration.showNotification(title, options)
-            );
-        }
-        // var options = {
-        //     body: `${completemsg}`,
-        //     icon: "./icons8-hangouts-512.png",
-        //     badge: "./icons8-hangouts-96.png",
-        //     data: {
-        //         message: "text"
-        //     },
-        //     actions:[
-        //         {
-        //             action: "reply",
-        //             title: "Reply"
-        //         },
-        //         {
-        //             action: "close",
-        //             title: "Dismiss"
-        //         }
-        //     ]
-        // };
-        // e.waitUntil(
-        //     self.registration.showNotification(title, options)
-        // );
+                {
+                    action: "close",
+                    title: "Dismiss"
+                }
+            ]
+        };
+        e.waitUntil(
+            self.registration.showNotification(title, options)
+        );
     }
     if(obj.type == "video"){
         var title = obj.title;
