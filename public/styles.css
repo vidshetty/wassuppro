@@ -436,6 +436,7 @@ body{
 .eachmsg{
     width: 100vw;
     height: auto;
+    background-color: transparent;
 }
 .msg{
     display: inline-block;

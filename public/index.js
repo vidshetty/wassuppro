@@ -169,7 +169,13 @@ var getallchats = () => {
                         main.classList.add("none");
                         chatroom.classList.remove("none");
                         isitnew = "true";
-                        retrievechats(loggedinemail,chatroomemail);
+                        axios.post("/shownewmsgs",{
+                            from: chatroomemail,
+                            to: loggedinemail
+                        }).then(result => {
+                            retrievechats(loggedinemail,chatroomemail,result.data.length);
+                        });
+                        // retrievechats(loggedinemail,chatroomemail);
                         // socket.emit("clear",{
                         //     to: loggedinemail,
                         //     from: chatroomemail
@@ -196,7 +202,7 @@ var getallchats = () => {
                         chatroom.classList.remove("none");
                         textarea.style.height = "42px";
                         isitnew = "false";
-                        retrievechats(loggedinemail,chatroomemail);
+                        retrievechats(loggedinemail,chatroomemail,0);
                     });
                 }
             });
@@ -228,16 +234,7 @@ var getonlinestatus = (other) => {
     });
 }
 
-shownewmsgs = (chatroomemail,loggedinemail) => {
-    axios.post("/shownewmsgs",{
-        from: chatroomemail,
-        to: loggedinemail
-    }).then(result => {
-        return result.data.length;
-    });
-}
-
-var retrievechats = (sender,receiver) => {
+var retrievechats = (sender,receiver,noofnewmsgs) => {
     msginputcount = 0;
     othermsgcount = 0;
     loader1.classList.remove("none");
@@ -248,10 +245,6 @@ var retrievechats = (sender,receiver) => {
         loader1.classList.add("none");
         if(result.data.chats != "no chats"){
             lastemail = result.data.chats[(result.data.chats.length - 1)].email;
-            if(shownewmsgs(chatroomemail,loggedinemail) > 0){
-                noofnewmsgs = shownewmsgs(chatroomemail,loggedinemail);
-                console.log("noofnewmsgs ",noofnewmsgs);
-            }
             for(var i=0;i<result.data.chats.length;i++){
                 const div1 = document.createElement("div");
                 div1.setAttribute("class","eachmsg");
@@ -594,7 +587,7 @@ searchinput.addEventListener("keyup",(e) => {
                         usertitle.innerText = chatroomtitlename;
                         addscreen.classList.add("none");
                         chatroom.classList.remove("none");
-                        retrievechats(loggedinemail,chatroomemail);
+                        retrievechats(loggedinemail,chatroomemail,0);
                     }); 
                 };
             }
@@ -914,11 +907,21 @@ document.addEventListener("visibilitychange",() => {
             email: loggedinemail
         });
         if(chatroomemail != ""){
-            retrievechats(loggedinemail,chatroomemail);
-            socket.emit("clear",{
+            axios.post("/shownewmsgs",{
                 from: chatroomemail,
                 to: loggedinemail
+            }).then(result => {
+                retrievechats(loggedinemail,chatroomemail,result.data.length);
+                socket.emit("clear",{
+                    from: chatroomemail,
+                    to: loggedinemail
+                });
             });
+            // retrievechats(loggedinemail,chatroomemail);
+            // socket.emit("clear",{
+            //     from: chatroomemail,
+            //     to: loggedinemail
+            // });
         }
         else{
             getallchats();
