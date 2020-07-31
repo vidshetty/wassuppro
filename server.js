@@ -222,23 +222,34 @@ io.on("connection",socket => {
     });
 
     socket.on("notify",data => {
-        var counter = 0;
         LoggedInUsers.findOne({email: data.receiver}).then(doc => {
-            console.log(doc);
             if(doc.status == "offline"){
-                // for(var i=0;i<doc.textnotification.length;i++){
-                //     if(doc.textnotification[i] == data.sender){
-                //         counter += 1;
-                //     }
-                // }
-                if(counter == 0){
+                NewMessages.findOne({from: data.sender,to: data.receiver}).then(result => {
+                    var payload = JSON.stringify({
+                        title: data.sendername,
+                        sender: data.sender,
+                        receiver: data.receiver,
+                        body: result.messages,
+                        type: "text",
+                        msg: data.message
+                    });
+                    var subscription = JSON.parse(doc.subscription[0]);
+                    push.sendNotification(subscription,payload);
+                    var newnotify = doc.textnotification;
+                    newnotify.push(data.sender);
+                    LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
+                    .then(() => {});
+                });
+            }
+            else{
+                if(doc.videocall == "streaming"){
                     NewMessages.findOne({from: data.sender,to: data.receiver}).then(result => {
-                        console.log(result);
                         var payload = JSON.stringify({
                             title: data.sendername,
                             body: result.messages,
                             type: "text",
-                            msg: data.message
+                            msg: data.message,
+                            streaming: "true"
                         });
                         var subscription = JSON.parse(doc.subscription[0]);
                         push.sendNotification(subscription,payload);
@@ -247,39 +258,6 @@ io.on("connection",socket => {
                         LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
                         .then(() => {});
                     });
-                    // var payload = JSON.stringify({
-                    //     title: data.sendername,
-                    //     type: "text",
-                    //     msg: data.message
-                    // });
-                    // var subscription = JSON.parse(doc.subscription[0]);
-                    // push.sendNotification(subscription,payload);
-                    // var newnotify = doc.textnotification;
-                    // newnotify.push(data.sender);
-                    // LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
-                    // .then(() => {});
-                }
-            }
-            else{
-                if(doc.videocall == "streaming"){
-                    if(counter == 0){
-                        NewMessages.findOne({from: data.sender,to: data.receiver}).then(result => {
-                            console.log(result);
-                            var payload = JSON.stringify({
-                                title: data.sendername,
-                                body: result.messages,
-                                type: "text",
-                                msg: data.message,
-                                streaming: "true"
-                            });
-                            var subscription = JSON.parse(doc.subscription[0]);
-                            push.sendNotification(subscription,payload);
-                            var newnotify = doc.textnotification;
-                            newnotify.push(data.sender);
-                            LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
-                            .then(() => {});
-                        });
-                    }
                 }
             }
         });
@@ -447,6 +425,16 @@ io.on("connection",socket => {
                 email: doc.email,
                 status: doc.status
             });
+        });
+    });
+
+    app.post("/onclick",(req,res) => {
+        LoggedInUsers.findOne({email: req.body.receiver}).then(doc => {
+            io.to(doc.socketid).emit("openchat",{
+                chatroomtitlename: req.body.name,
+                chatroomemail: req.body.sender
+            });
+            res.send("Done");
         });
     });
 

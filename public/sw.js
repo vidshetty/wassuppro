@@ -1,6 +1,5 @@
 self.addEventListener('push',e => {
     var obj = e.data.json();
-    console.log(obj);
     if(obj.type == "text"){
         if(obj.body.length == 1){
             var title = `${obj.title} (${obj.body.length} new message)`;
@@ -56,7 +55,10 @@ self.addEventListener('push',e => {
                 tag: "renotify",
                 renotify: true,
                 data: {
-                    message: "text"
+                    message: "text",
+                    name: obj.title,
+                    sender: obj.sender,
+                    receiver: obj.receiver
                 },
                 actions:[
                     {
@@ -105,6 +107,19 @@ self.addEventListener("notificationclick",e => {
         else if(e.action == "close"){}
         else{
             clients.openWindow("https://wassuppro.herokuapp.com");
+            fetch("/onclick",{
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: {
+                    name: e.notification.data.name,
+                    sender: e.notification.data.sender,
+                    receiver: e.notification.data.receiver
+                }
+            }).then(response => {
+                response.json().then(() => console.log("fetch worked"));
+            });
         }
         e.notification.close();
     }

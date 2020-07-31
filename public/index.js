@@ -83,6 +83,21 @@ else{
         checkbrowser();
         chatroomemail = "";
         chatroomtitlename = "";
+        if("serviceWorker" in navigator){
+            navigator.serviceWorker.register("./sw.js").then(sw => {
+                sw.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(pubkey)
+                }).then(subs => {
+                    if(Notification.permission == "granted"){
+                        axios.post("/subscribe",{
+                            data: JSON.stringify(subs),
+                            email: emailid
+                        }).then(data => {});
+                    }
+                });
+            });
+        }
     });
 }
 
@@ -640,23 +655,10 @@ socket.on("typingyes",val => {
 });
 
 socket.on("confirm",data => {
-    console.log("loggedinemail ",loggedinemail);
-    console.log("chatroomemail ",chatroomemail);
     if(data.val == "receiver's" && data.no == 0){
         getallchats();
     }
-    // else if(data.val == "receiver's" && data.no == 1){
-    //     console.log("calling notify");
-    //     socket.emit("notify",{
-    //         sender: loggedinemail,
-    //         receiver: chatroomemail,
-    //         sendername: loggedinname,
-    //         message: mainmsg
-    //     });
-    //     mainmsg = "";
-    // }
     else{
-        console.log("calling notify");
         socket.emit("notify",{
             sender: loggedinemail,
             receiver: chatroomemail,
@@ -885,3 +887,13 @@ socket.on("interruptres",data => {
         },2000);
     }
 });
+
+socket.on("openchat",data => {
+    chatroomtitlename = data.chatroomtitlename;
+    chatroomemail = data.chatroomemail;
+    main.classList.add("none");
+    addscreen.classList.add("none");
+    chatroom.classList.remove("none");
+    usertitle.innerText = chatroomtitlename;
+    retrievechats(loggedinemail,chatroomemail);
+})
