@@ -225,6 +225,7 @@ socket.on("seen",data => {
         seendiv.setAttribute("class","eachright");
         seendiv.textContent = "seen";
         messages.appendChild(seendiv);
+        messages.scrollTop = messages.scrollHeight;
     }
 });
 
