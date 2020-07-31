@@ -192,7 +192,7 @@ io.on("connection",socket => {
                 });
             }
             else{
-                findnewMessage(1,data,0);
+                findnewMessage(1,data,socket);
             }
         });
     });
