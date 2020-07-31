@@ -79,7 +79,7 @@ var findnewMessage = (num,data,socket) => {
                 NewMessages.findOneAndUpdate({to: data.receiver,from:data.sender},{messages: rarr},{new:true}).then(result => {
                     socket.emit("confirm",{
                         val: "receiver's",
-                        no: 0
+                        no: 1
                     });
                     // LoggedInUsers.findOne({email: data.from}).then(res => {
                     //     io.to(res.socketid).emit("confirm",{
@@ -101,7 +101,7 @@ var findnewMessage = (num,data,socket) => {
                     newm.save().then((result) => {
                         socket.emit("confirm",{
                             val: "receiver's",
-                            no: 0
+                            no: 1
                         });
                         // LoggedInUsers.findOne({email: data.from}).then(res => {
                         //     io.to(res.socketid).emit("confirm",{
@@ -121,7 +121,7 @@ var findnewMessage = (num,data,socket) => {
                 NewMessages.findOneAndUpdate({to: data.to,from:data.from},{messages: rarr},{new:true}).then(result => {
                     socket.emit("confirm",{
                         val: "receiver's",
-                        no: 1
+                        no: 0
                     });
                     LoggedInUsers.findOne({email: data.from}).then(res => {
                         io.to(res.socketid).emit("confirm",{
@@ -143,7 +143,7 @@ var findnewMessage = (num,data,socket) => {
                     newm.save().then((result) => {
                         socket.emit("confirm",{
                             val: "receiver's",
-                            no: 1
+                            no: 0
                         });
                         LoggedInUsers.findOne({email: data.from}).then(res => {
                             io.to(res.socketid).emit("confirm",{
