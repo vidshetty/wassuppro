@@ -642,9 +642,19 @@ socket.on("typingyes",val => {
 socket.on("confirm",data => {
     console.log("loggedinemail ",loggedinemail);
     console.log("chatroomemail ",chatroomemail);
-    if(data.val == "receiver's"){
+    if(data.val == "receiver's" && data.no == 0){
         getallchats();
     }
+    // else if(data.val == "receiver's" && data.no == 1){
+    //     console.log("calling notify");
+    //     socket.emit("notify",{
+    //         sender: loggedinemail,
+    //         receiver: chatroomemail,
+    //         sendername: loggedinname,
+    //         message: mainmsg
+    //     });
+    //     mainmsg = "";
+    // }
     else{
         console.log("calling notify");
         socket.emit("notify",{
