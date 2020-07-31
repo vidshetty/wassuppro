@@ -639,6 +639,7 @@ socket.on("typingyes",val => {
 
 socket.on("confirm",() => {
     getallchats();
+    console.log(loggedinemail,chatroomemail);
     socket.emit("notify",{
         sender: loggedinemail,
         receiver: chatroomemail,
