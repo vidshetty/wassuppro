@@ -718,6 +718,10 @@ socket.on("livemsg",data => {
             messages.removeChild(seendiv);
             seendiv = null;
         }
+        socket.emit("seen",{
+            from: chatroomemail,
+            to: loggedinemail
+        });
         messages.appendChild(div1);
         messages.scrollTop = messages.scrollHeight;
     }
