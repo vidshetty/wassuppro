@@ -728,6 +728,9 @@ socket.on("livemsg",data => {
         lastemail = chatroomemail;
         othermsgcount += 1;
         msginputcount = 0;
+        if(randomdiv != null){
+            randomdiv.textContent = "new messages";
+        }
         messages.appendChild(div1);
         messages.scrollTop = messages.scrollHeight;
     }
