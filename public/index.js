@@ -642,8 +642,10 @@ socket.on("typingyes",val => {
 socket.on("confirm",data => {
     console.log("loggedinemail ",loggedinemail);
     console.log("chatroomemail ",chatroomemail);
-    getallchats();
-    if(data.val == "inserted" || data.val == "created"){
+    if(data.val == "receiver's"){
+        getallchats();
+    }
+    else{
         console.log("calling notify");
         socket.emit("notify",{
             sender: loggedinemail,
