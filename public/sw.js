@@ -2,10 +2,34 @@ self.addEventListener('push',e => {
     var obj = e.data.json();
     console.log(obj);
     if(obj.type == "text"){
-        var title = `${obj.title} (${obj.body.length} new messages)`;
+        if(obj.body.length == 1){
+            var title = `${obj.title} (${obj.body.length} new message)`;
+        }
+        else{
+            var title = `${obj.title} (${obj.body.length} new messages)`;
+        }
         var completemsg = "";
-        for(var i=0;i<obj.body.length;i++){
-            completemsg += `${obj.body[i]}\n`;
+        if(obj.body.length < 4){
+            for(var i=0;i<obj.body.length;i++){
+                if(i != (obj.body.length - 1)){
+                    completemsg += `${obj.body[i]}\n`;
+                }
+                else{
+                    completemsg += `${obj.body[i]}`;
+                }
+            }
+        }
+        else{
+            var leng = obj.body.length;
+            for(var i=3;i>=1;i--){
+                if(i != 1){
+                    completemsg += `${obj.body[leng-i]}\n`;
+                }
+                else{
+                    completemsg += `${obj.body[leng-i]}`;
+                }
+                completemsg += `${obj.body[i]}\n`;
+            }
         }
         var options = {
             body: `${completemsg}`,
