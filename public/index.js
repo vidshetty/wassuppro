@@ -220,7 +220,7 @@ var getallchats = () => {
 }
 
 socket.on("seen",data => {
-    if(data.seen = "true" && chatroomemail == data.to && lastemail == loggedinemail){
+    if(data.seen = "true" && chatroomemail == data.to && lastemail == loggedinemail && randomdiv == null){
         seendiv = document.createElement("div");
         seendiv.setAttribute("class","eachright");
         seendiv.textContent = "seen";
