@@ -47,6 +47,22 @@ var constraints = {
     video: true,
     audio: true
 }
+var pubkey = "BEcF57uMF5LyK9boqYxf-9q21GdcWX707xxPz-MWieIhCI4lwBCgP9xtxWeYq632HaR0b9mwI9GW1dxs6r2zoV0";
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
 
 
 
