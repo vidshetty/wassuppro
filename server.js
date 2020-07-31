@@ -200,6 +200,7 @@ io.on("connection",socket => {
     socket.on("notify",data => {
         var counter = 0;
         LoggedInUsers.findOne({email: data.receiver}).then(doc => {
+            console.log(doc);
             if(doc.status == "offline"){
                 // for(var i=0;i<doc.textnotification.length;i++){
                 //     if(doc.textnotification[i] == data.sender){
