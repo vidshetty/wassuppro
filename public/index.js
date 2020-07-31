@@ -639,17 +639,20 @@ socket.on("typingyes",val => {
     }
 });
 
-socket.on("confirm",() => {
+socket.on("confirm",data => {
     console.log("loggedinemail ",loggedinemail);
     console.log("chatroomemail ",chatroomemail);
     getallchats();
-    socket.emit("notify",{
-        sender: loggedinemail,
-        receiver: chatroomemail,
-        sendername: loggedinname,
-        message: mainmsg
-    });
-    mainmsg = "";
+    if(data.val == "inserted" || data.val == "created"){
+        console.log("calling notify");
+        socket.emit("notify",{
+            sender: loggedinemail,
+            receiver: chatroomemail,
+            sendername: loggedinname,
+            message: mainmsg
+        });
+        mainmsg = "";
+    }
 });
 
 socket.on("callrequest",data => {
