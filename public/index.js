@@ -172,21 +172,16 @@ var getallchats = () => {
                         chatroom.classList.remove("none");
                         isitnew = "true";
                         loader1.classList.remove("none");
+                        socket.emit("seen",{
+                            from: chatroomemail,
+                            to: loggedinemail
+                        });
                         axios.post("/shownewmsgs",{
                             from: chatroomemail,
                             to: loggedinemail
                         }).then(result => {
                             retrievechats(loggedinemail,chatroomemail,result.data.length);
-                            socket.emit("seen",{
-                                from: chatroomemail,
-                                to: loggedinemail
-                            });
                         });
-                        // retrievechats(loggedinemail,chatroomemail);
-                        // socket.emit("clear",{
-                        //     to: loggedinemail,
-                        //     from: chatroomemail
-                        // });
                         chatlist.removeChild(e.currentTarget);
                     });
                 }
@@ -225,7 +220,7 @@ var getallchats = () => {
 }
 
 socket.on("seen",data => {
-    if(data.seen = "true" && chatroomemail == data.to && lastemail == chatroomemail){
+    if(data.seen = "true" && chatroomemail == data.to && lastemail == loggedinemail){
         seendiv = document.createElement("div");
         seendiv.setAttribute("class","eachright");
         seendiv.textContent = "seen";
@@ -291,16 +286,6 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         }
                         div1.appendChild(div2);
                         messages.appendChild(div1);
-                        // if(noofnewmsgs != 0){
-                        //     if(i == (result.data.chats.length - noofnewmsgs)){
-                        //         div1.style.backgroundColor = "rgba(255,255,255,0.2)";
-                        //         noofnewmsgs -= 1;
-                        //         console.log("colored");
-                        //         setTimeout(() => {
-                        //             div1.style.backgroundColor = "transparent";
-                        //         },1000);
-                        //     }
-                        // }
                     }
                     else{
                         const div1 = document.createElement("div");
@@ -328,16 +313,6 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         }
                         div1.appendChild(div2);
                         messages.appendChild(div1);
-                        // if(noofnewmsgs != 0){
-                        //     if(i == (result.data.chats.length - noofnewmsgs)){
-                        //         div1.style.backgroundColor = "rgba(255,255,255,0.2)";
-                        //         noofnewmsgs -= 1;
-                        //         console.log("colored");
-                        //         setTimeout(() => {
-                        //             div1.style.backgroundColor = "transparent";
-                        //         },1000);
-                        //     }
-                        // }
                     }
                 }
                 else{
@@ -366,16 +341,6 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     }
                     div1.appendChild(div2);
                     messages.appendChild(div1);
-                    // if(noofnewmsgs != 0){
-                    //     if(i == (result.data.chats.length - noofnewmsgs)){
-                    //         div1.style.backgroundColor = "rgba(255,255,255,0.2)";
-                    //         noofnewmsgs -= 1;
-                    //         console.log("colored");
-                    //         setTimeout(() => {
-                    //             div1.style.backgroundColor = "transparent";
-                    //         },1000);
-                    //     }
-                    // }
                 }
                 messages.scrollTop = messages.scrollHeight;
             };
