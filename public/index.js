@@ -265,7 +265,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "black";
+                                div1.style.backgroundColor = "rgba(0,0,0,0.2)";
                                 noofnewmsgs -= 1;
                                 console.log("colored");
                                 setTimeout(() => {
@@ -289,7 +289,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "black";
+                                div1.style.backgroundColor = "rgba(0,0,0,0.2)";
                                 noofnewmsgs -= 1;
                                 console.log("colored");
                                 setTimeout(() => {
@@ -314,7 +314,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     messages.appendChild(div1);
                     if(noofnewmsgs != 0){
                         if(i == (result.data.chats.length - noofnewmsgs)){
-                            div1.style.backgroundColor = "black";
+                            div1.style.backgroundColor = "rgba(0,0,0,0.2)";
                             noofnewmsgs -= 1;
                             console.log("colored");
                             setTimeout(() => {
