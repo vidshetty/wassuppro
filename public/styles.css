@@ -437,7 +437,25 @@ body{
     width: 100vw;
     height: auto;
     /* background-color: transparent; */
-    transition: background-color 0.5s ease-in-out;
+    /* transition: background-color 0.5s ease-in-out; */
+}
+.eachleft{
+    width: 100vw;
+    height: auto;
+    text-align: left;
+    padding-left: 15px;
+    font-size: 1.3em;
+    font-family: "Google Sans",sans-serif;
+    color: rgba(255,255,255,0.2);
+}
+.eachright{
+    width: 100vw;
+    height: auto;
+    text-align: right;
+    padding-left: 15px;
+    font-size: 1.3em;
+    font-family: "Google Sans",sans-serif;
+    color: rgba(255,255,255,0.2);
 }
 .msg{
     display: inline-block;

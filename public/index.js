@@ -261,18 +261,31 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                             div2.setAttribute("class","msg left");
                             div2.style.marginTop = "15px";
                         }
-                        div1.appendChild(div2);
-                        messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "rgba(255,255,255,0.2)";
-                                noofnewmsgs -= 1;
-                                console.log("colored");
-                                setTimeout(() => {
-                                    div1.style.backgroundColor = "transparent";
-                                },1000);
+                                const randomdiv = document.createElement("div");
+                                randomdiv.setAttribute("class","eachleft");
+                                if(noofnewmsgs == 1){
+                                    randomdiv.textContent = "new message";    
+                                }
+                                else{
+                                    randomdiv.textContent = "new messages";
+                                }
+                                messages.appendChild(randomdiv);
                             }
                         }
+                        div1.appendChild(div2);
+                        messages.appendChild(div1);
+                        // if(noofnewmsgs != 0){
+                        //     if(i == (result.data.chats.length - noofnewmsgs)){
+                        //         div1.style.backgroundColor = "rgba(255,255,255,0.2)";
+                        //         noofnewmsgs -= 1;
+                        //         console.log("colored");
+                        //         setTimeout(() => {
+                        //             div1.style.backgroundColor = "transparent";
+                        //         },1000);
+                        //     }
+                        // }
                     }
                     else{
                         const div1 = document.createElement("div");
@@ -285,18 +298,31 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         else{
                             div2.setAttribute("class","msg left");
                         }
-                        div1.appendChild(div2);
-                        messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "rgba(255,255,255,0.2)";
-                                noofnewmsgs -= 1;
-                                console.log("colored");
-                                setTimeout(() => {
-                                    div1.style.backgroundColor = "transparent";
-                                },1000);
+                                const randomdiv = document.createElement("div");
+                                randomdiv.setAttribute("class","eachleft");
+                                if(noofnewmsgs == 1){
+                                    randomdiv.textContent = "new message";    
+                                }
+                                else{
+                                    randomdiv.textContent = "new messages";
+                                }
+                                messages.appendChild(randomdiv);
                             }
                         }
+                        div1.appendChild(div2);
+                        messages.appendChild(div1);
+                        // if(noofnewmsgs != 0){
+                        //     if(i == (result.data.chats.length - noofnewmsgs)){
+                        //         div1.style.backgroundColor = "rgba(255,255,255,0.2)";
+                        //         noofnewmsgs -= 1;
+                        //         console.log("colored");
+                        //         setTimeout(() => {
+                        //             div1.style.backgroundColor = "transparent";
+                        //         },1000);
+                        //     }
+                        // }
                     }
                 }
                 else{
@@ -310,18 +336,31 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     else{
                         div2.setAttribute("class","msg left");
                     }
-                    div1.appendChild(div2);
-                    messages.appendChild(div1);
                     if(noofnewmsgs != 0){
                         if(i == (result.data.chats.length - noofnewmsgs)){
-                            div1.style.backgroundColor = "rgba(255,255,255,0.2)";
-                            noofnewmsgs -= 1;
-                            console.log("colored");
-                            setTimeout(() => {
-                                div1.style.backgroundColor = "transparent";
-                            },1000);
+                            const randomdiv = document.createElement("div");
+                            randomdiv.setAttribute("class","eachleft");
+                            if(noofnewmsgs == 1){
+                                randomdiv.textContent = "new message";    
+                            }
+                            else{
+                                randomdiv.textContent = "new messages";
+                            }
+                            messages.appendChild(randomdiv);
                         }
                     }
+                    div1.appendChild(div2);
+                    messages.appendChild(div1);
+                    // if(noofnewmsgs != 0){
+                    //     if(i == (result.data.chats.length - noofnewmsgs)){
+                    //         div1.style.backgroundColor = "rgba(255,255,255,0.2)";
+                    //         noofnewmsgs -= 1;
+                    //         console.log("colored");
+                    //         setTimeout(() => {
+                    //             div1.style.backgroundColor = "transparent";
+                    //         },1000);
+                    //     }
+                    // }
                 }
                 messages.scrollTop = messages.scrollHeight;
             };
