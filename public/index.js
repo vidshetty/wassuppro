@@ -81,6 +81,8 @@ else{
             email: loggedinemail
         });
         checkbrowser();
+        chatroomemail = "";
+        chatroomtitlename = "";
     });
 }
 
