@@ -419,6 +419,16 @@ io.on("connection",socket => {
         }
     });
 
+    socket.on("seen",data => {
+        LoggedInUsers.findOne({email: data.from}).then(doc => {
+            io.to(doc.socketid).emit("seen",{
+                seen: "true",
+                from: data.from,
+                to: data.to
+            });
+        })
+    });
+
     socket.on("onconnect",data => {
         LoggedInUsers.findOneAndUpdate({email: data.email},{status: "online",socketid: socket.id,textnotification: [],videonotification:[]},{new:true}).then(doc => {
             socket.broadcast.emit("statusres",{

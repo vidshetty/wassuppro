@@ -46,6 +46,7 @@ var peerid = "";
 var call,peer;
 var ourstream = null;
 var randomdiv = null;
+var seendiv = null;
 var constraints = {
     video: true,
     audio: true
@@ -176,6 +177,10 @@ var getallchats = () => {
                             to: loggedinemail
                         }).then(result => {
                             retrievechats(loggedinemail,chatroomemail,result.data.length);
+                            socket.emit("seen",{
+                                from: chatroomemail,
+                                to: loggedinemail
+                            });
                         });
                         // retrievechats(loggedinemail,chatroomemail);
                         // socket.emit("clear",{
@@ -218,6 +223,15 @@ var getallchats = () => {
         }
     });
 }
+
+socket.on("seen",data => {
+    if(data.seen = "true" && chatroomemail == data.to && lastemail == chatroomemail){
+        seendiv = document.createElement("div");
+        seendiv.setAttribute("class","eachright");
+        seendiv.textContent = "seen";
+        messages.appendChild(seendiv);
+    }
+});
 
 var compare = (a,b) => {
     var one = a.name.toLowerCase();
@@ -676,6 +690,10 @@ sendbutton.addEventListener("click",(e) => {
         messages.removeChild(randomdiv);
         randomdiv = null;
     }
+    if(seendiv != null){
+        messages.removeChild(seendiv);
+        seendiv = null;
+    }
     var msg = msginput.value;
     mainmsg = msg;
     if(msg.match(/^[\s]*$/)){
@@ -730,6 +748,10 @@ socket.on("livemsg",data => {
         msginputcount = 0;
         if(randomdiv != null){
             randomdiv.textContent = "new messages";
+        }
+        if(seendiv != null){
+            messages.removeChild(seendiv);
+            seendiv = null;
         }
         messages.appendChild(div1);
         messages.scrollTop = messages.scrollHeight;
