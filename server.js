@@ -428,17 +428,6 @@ io.on("connection",socket => {
         });
     });
 
-    // app.post("/onclick",(req,res) => {
-    //     console.log(req.body);
-    //     LoggedInUsers.findOne({email: req.body.receiver}).then(doc => {
-    //         io.to(doc.socketid).emit("openchat",{
-    //             chatroomtitlename: req.body.name,
-    //             chatroomemail: req.body.sender
-    //         });
-    //         res.send("Done");
-    //     });
-    // });
-
     socket.on("disconnect",() => {
         LoggedInUsers.findOneAndUpdate({socketid: socket.id},{status: "offline"},{new:true}).then((doc) => {
             socket.broadcast.emit("statusres",{
@@ -446,17 +435,6 @@ io.on("connection",socket => {
                 status: doc.status
             });
         }).catch(err => console.log(err.message));
-    });
-});
-
-app.post("/onclick",(req,res) => {
-    console.log(req.body);
-    LoggedInUsers.findOne({email: req.body.receiver}).then(doc => {
-        // io.to(doc.socketid).emit("openchat",{
-        //     chatroomtitlename: req.body.name,
-        //     chatroomemail: req.body.sender
-        // });
-        res.send("Done");
     });
 });
 

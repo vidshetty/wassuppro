@@ -903,13 +903,3 @@ socket.on("interruptres",data => {
         },2000);
     }
 });
-
-socket.on("openchat",data => {
-    chatroomtitlename = data.chatroomtitlename;
-    chatroomemail = data.chatroomemail;
-    main.classList.add("none");
-    addscreen.classList.add("none");
-    chatroom.classList.remove("none");
-    usertitle.innerText = chatroomtitlename;
-    retrievechats(loggedinemail,chatroomemail);
-})

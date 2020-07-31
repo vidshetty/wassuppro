@@ -55,10 +55,7 @@ self.addEventListener('push',e => {
                 tag: "renotify",
                 renotify: true,
                 data: {
-                    message: "text",
-                    name: obj.title,
-                    sender: obj.sender,
-                    receiver: obj.receiver
+                    message: "text"
                 },
                 actions:[
                     {
@@ -105,23 +102,7 @@ self.addEventListener("notificationclick",e => {
             clients.openWindow("https://wassuppro.herokuapp.com");
         }
         else if(e.action == "close"){}
-        else{
-            console.log(e.notification.data);
-            clients.openWindow("https://wassuppro.herokuapp.com");
-            fetch("/onclick",{
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: {
-                    name: e.notification.data.name,
-                    sender: e.notification.data.sender,
-                    receiver: e.notification.data.receiver
-                }
-            }).then(response => {
-                response.json().then(() => console.log("fetch worked"));
-            });
-        }
+        else{}
         e.notification.close();
     }
     if(e.notification.data.message == "video"){
