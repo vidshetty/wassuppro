@@ -169,6 +169,7 @@ var getallchats = () => {
                         main.classList.add("none");
                         chatroom.classList.remove("none");
                         isitnew = "true";
+                        loader1.classList.remove("none");
                         axios.post("/shownewmsgs",{
                             from: chatroomemail,
                             to: loggedinemail
@@ -202,6 +203,7 @@ var getallchats = () => {
                         chatroom.classList.remove("none");
                         textarea.style.height = "42px";
                         isitnew = "false";
+                        loader1.classList.remove("none");
                         retrievechats(loggedinemail,chatroomemail,0);
                     });
                 }
@@ -237,7 +239,6 @@ var getonlinestatus = (other) => {
 var retrievechats = (sender,receiver,noofnewmsgs) => {
     msginputcount = 0;
     othermsgcount = 0;
-    loader1.classList.remove("none");
     axios.post("/retrievechats",{
         sender: sender,
         receiver: receiver
@@ -267,6 +268,9 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                                 div1.style.backgroundColor = "aqua";
                                 noofnewmsgs -= 1;
                                 console.log("colored");
+                                setTimeout(() => {
+                                    div1.style.backgroundColor = "transparent";
+                                },2000);
                             }
                         }
                     }
@@ -288,6 +292,9 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                                 div1.style.backgroundColor = "aqua";
                                 noofnewmsgs -= 1;
                                 console.log("colored");
+                                setTimeout(() => {
+                                    div1.style.backgroundColor = "transparent";
+                                },2000);
                             }
                         }
                     }
@@ -310,6 +317,9 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                             div1.style.backgroundColor = "aqua";
                             noofnewmsgs -= 1;
                             console.log("colored");
+                            setTimeout(() => {
+                                div1.style.backgroundColor = "transparent";
+                            },2000);
                         }
                     }
                 }
@@ -587,6 +597,7 @@ searchinput.addEventListener("keyup",(e) => {
                         usertitle.innerText = chatroomtitlename;
                         addscreen.classList.add("none");
                         chatroom.classList.remove("none");
+                        loader1.classList.remove("none");
                         retrievechats(loggedinemail,chatroomemail,0);
                     }); 
                 };
@@ -907,6 +918,7 @@ document.addEventListener("visibilitychange",() => {
             email: loggedinemail
         });
         if(chatroomemail != ""){
+            loader1.classList.remove("none");
             axios.post("/shownewmsgs",{
                 from: chatroomemail,
                 to: loggedinemail

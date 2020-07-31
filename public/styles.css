@@ -436,7 +436,8 @@ body{
 .eachmsg{
     width: 100vw;
     height: auto;
-    background-color: transparent;
+    /* background-color: transparent; */
+    transition: background-color 5s ease-in-out;
 }
 .msg{
     display: inline-block;
