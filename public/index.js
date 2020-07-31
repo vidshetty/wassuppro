@@ -45,6 +45,7 @@ var videoreceiver = "";
 var peerid = "";
 var call,peer;
 var ourstream = null;
+var randomdiv = null;
 var constraints = {
     video: true,
     audio: true
@@ -263,7 +264,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         }
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                const randomdiv = document.createElement("div");
+                                randomdiv = document.createElement("div");
                                 randomdiv.setAttribute("class","eachleft");
                                 if(noofnewmsgs == 1){
                                     randomdiv.textContent = "new message";    
@@ -300,7 +301,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         }
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                const randomdiv = document.createElement("div");
+                                randomdiv = document.createElement("div");
                                 randomdiv.setAttribute("class","eachleft");
                                 if(noofnewmsgs == 1){
                                     randomdiv.textContent = "new message";    
@@ -338,7 +339,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     }
                     if(noofnewmsgs != 0){
                         if(i == (result.data.chats.length - noofnewmsgs)){
-                            const randomdiv = document.createElement("div");
+                            randomdiv = document.createElement("div");
                             randomdiv.setAttribute("class","eachleft");
                             if(noofnewmsgs == 1){
                                 randomdiv.textContent = "new message";    
@@ -671,6 +672,10 @@ msginput.addEventListener("keyup",(e) => {
     }
 });
 sendbutton.addEventListener("click",(e) => {
+    if(randomdiv != null){
+        messages.removeChild(randomdiv);
+        randomdiv = null;
+    }
     var msg = msginput.value;
     mainmsg = msg;
     if(msg.match(/^[\s]*$/)){
