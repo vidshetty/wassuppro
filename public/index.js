@@ -724,10 +724,10 @@ socket.on("livemsg",data => {
         if(randomdiv != null){
             randomdiv.textContent = "new messages";
         }
-        // if(seendiv != null){
-        //     messages.removeChild(seendiv);
-        //     seendiv = null;
-        // }
+        if(seendiv != null){
+            messages.removeChild(seendiv);
+            seendiv = null;
+        }
         socket.emit("seen",{
             from: chatroomemail,
             to: loggedinemail
