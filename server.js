@@ -438,6 +438,12 @@ io.on("connection",socket => {
     });
 });
 
+app.post("/shownewmsgs",(req,res) => {
+    NewMessages.findOne({from: req.body.from,to: req.body.to}),then(doc => {
+        res.send(doc.messages);
+    });
+});
+
 app.post("/login",(req,res) => {
     email = req.body.email;
     Users.findOne({email: req.body.email}).then((doc) => {

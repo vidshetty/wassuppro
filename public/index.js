@@ -19,6 +19,8 @@ const bottomdiv = document.querySelector(".bottom");
 const mute = document.querySelector(".mute");
 const videomute = document.querySelector(".videomute");
 const close = document.querySelector(".close");
+var isitnew = "false";
+var noofnewmsgs;
 var lastemail = "";
 var mainmsg = "";
 var newcount = -1;
@@ -166,11 +168,12 @@ var getallchats = () => {
                         usertitle.innerText = chatroomtitlename;
                         main.classList.add("none");
                         chatroom.classList.remove("none");
+                        isitnew = "true";
                         retrievechats(loggedinemail,chatroomemail);
-                        socket.emit("clear",{
-                            to: loggedinemail,
-                            from: chatroomemail
-                        });
+                        // socket.emit("clear",{
+                        //     to: loggedinemail,
+                        //     from: chatroomemail
+                        // });
                         chatlist.removeChild(e.currentTarget);
                     });
                 }
@@ -192,6 +195,7 @@ var getallchats = () => {
                         main.classList.add("none");
                         chatroom.classList.remove("none");
                         textarea.style.height = "42px";
+                        isitnew = "false";
                         retrievechats(loggedinemail,chatroomemail);
                     });
                 }
@@ -224,6 +228,15 @@ var getonlinestatus = (other) => {
     });
 }
 
+shownewmsgs = (chatroomemail,loggedinemail) => {
+    axios.post("/shownewmsgs",{
+        from: chatroomemail,
+        to: loggedinemail
+    }).then(result => {
+        return result.data.length;
+    });
+}
+
 var retrievechats = (sender,receiver) => {
     msginputcount = 0;
     othermsgcount = 0;
@@ -235,6 +248,9 @@ var retrievechats = (sender,receiver) => {
         loader1.classList.add("none");
         if(result.data.chats != "no chats"){
             lastemail = result.data.chats[(result.data.chats.length - 1)].email;
+            if(shownewmsgs(chatroomemail,loggedinemail) > 0){
+                noofnewmsgs = shownewmsgs(chatroomemail,loggedinemail);
+            }
             for(var i=0;i<result.data.chats.length;i++){
                 const div1 = document.createElement("div");
                 div1.setAttribute("class","eachmsg");
@@ -252,6 +268,12 @@ var retrievechats = (sender,receiver) => {
                         }
                         div1.appendChild(div2);
                         messages.appendChild(div1);
+                        if(noofnewmsgs != 0){
+                            if(i == (result.data.chats.length - noofnewmsgs)){
+                                div1.style.backgroundColor = "rgba(0,0,0,0.1)";
+                                noofnewmsgs -= 1;
+                            }
+                        }
                     }
                     else{
                         const div1 = document.createElement("div");
@@ -266,6 +288,12 @@ var retrievechats = (sender,receiver) => {
                         }
                         div1.appendChild(div2);
                         messages.appendChild(div1);
+                        if(noofnewmsgs != 0){
+                            if(i == (result.data.chats.length - noofnewmsgs)){
+                                div1.style.backgroundColor = "rgba(0,0,0,0.1)";
+                                noofnewmsgs -= 1;
+                            }
+                        }
                     }
                 }
                 else{
@@ -281,9 +309,21 @@ var retrievechats = (sender,receiver) => {
                     }
                     div1.appendChild(div2);
                     messages.appendChild(div1);
+                    if(noofnewmsgs != 0){
+                        if(i == (result.data.chats.length - noofnewmsgs)){
+                            div1.style.backgroundColor = "rgba(0,0,0,0.1)";
+                            noofnewmsgs -= 1;
+                        }
+                    }
                 }
                 messages.scrollTop = messages.scrollHeight;
             };
+            if(isitnew == "true"){
+                socket.emit("clear",{
+                    to: loggedinemail,
+                    from: chatroomemail
+                });
+            }
         }
     });
     getonlinestatus(receiver);
