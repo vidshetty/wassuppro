@@ -106,6 +106,7 @@ self.addEventListener("notificationclick",e => {
         }
         else if(e.action == "close"){}
         else{
+            console.log(e.notification.data);
             clients.openWindow("https://wassuppro.herokuapp.com");
             fetch("/onclick",{
                 method: "post",

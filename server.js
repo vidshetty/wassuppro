@@ -429,6 +429,7 @@ io.on("connection",socket => {
     });
 
     app.post("/onclick",(req,res) => {
+        console.log(req.body);
         LoggedInUsers.findOne({email: req.body.receiver}).then(doc => {
             io.to(doc.socketid).emit("openchat",{
                 chatroomtitlename: req.body.name,
