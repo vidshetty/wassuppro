@@ -195,23 +195,37 @@ io.on("connection",socket => {
         var counter = 0;
         LoggedInUsers.findOne({email: data.receiver}).then(doc => {
             if(doc.status == "offline"){
-                for(var i=0;i<doc.textnotification.length;i++){
-                    if(doc.textnotification[i] == data.sender){
-                        counter += 1;
-                    }
-                }
+                // for(var i=0;i<doc.textnotification.length;i++){
+                //     if(doc.textnotification[i] == data.sender){
+                //         counter += 1;
+                //     }
+                // }
                 if(counter == 0){
-                    var payload = JSON.stringify({
-                        title: data.sendername,
-                        type: "text",
-                        msg: data.message
+                    NewMessages.findOne({from: data.sender,to: data.receiver}).then(result => {
+                        var payload = JSON.stringify({
+                            title: data.sendername,
+                            body: result.messages,
+                            type: "text",
+                            msg: data.message
+                        });
+                        var subscription = JSON.parse(doc.subscription[0]);
+                        push.sendNotification(subscription,payload);
+                        var newnotify = doc.textnotification;
+                        newnotify.push(data.sender);
+                        LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
+                        .then(() => {});
                     });
-                    var subscription = JSON.parse(doc.subscription[0]);
-                    push.sendNotification(subscription,payload);
-                    var newnotify = doc.textnotification;
-                    newnotify.push(data.sender);
-                    LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
-                    .then(() => {});
+                    // var payload = JSON.stringify({
+                    //     title: data.sendername,
+                    //     type: "text",
+                    //     msg: data.message
+                    // });
+                    // var subscription = JSON.parse(doc.subscription[0]);
+                    // push.sendNotification(subscription,payload);
+                    // var newnotify = doc.textnotification;
+                    // newnotify.push(data.sender);
+                    // LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
+                    // .then(() => {});
                 }
             }
         });

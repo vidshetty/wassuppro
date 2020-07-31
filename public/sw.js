@@ -2,8 +2,12 @@ self.addEventListener('push',e => {
     var obj = e.data.json();
     if(obj.type == "text"){
         var title = obj.title;
+        var completemsg = "";
+        for(var i=0;i<obj.body;i++){
+            completemsg += `${obj.body[i]}\n`;
+        }
         var options = {
-            body: `${obj.msg}`,
+            body: `${completemsg}`,
             icon: "./icons8-hangouts-512.png",
             badge: "./icons8-hangouts-96.png",
             data: {
