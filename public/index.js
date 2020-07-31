@@ -250,6 +250,7 @@ var retrievechats = (sender,receiver) => {
             lastemail = result.data.chats[(result.data.chats.length - 1)].email;
             if(shownewmsgs(chatroomemail,loggedinemail) > 0){
                 noofnewmsgs = shownewmsgs(chatroomemail,loggedinemail);
+                console.log("noofnewmsgs ",noofnewmsgs);
             }
             for(var i=0;i<result.data.chats.length;i++){
                 const div1 = document.createElement("div");
@@ -270,8 +271,9 @@ var retrievechats = (sender,receiver) => {
                         messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "rgba(0,0,0,0.1)";
+                                div1.style.backgroundColor = "aqua";
                                 noofnewmsgs -= 1;
+                                console.log("colored");
                             }
                         }
                     }
@@ -290,8 +292,9 @@ var retrievechats = (sender,receiver) => {
                         messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "rgba(0,0,0,0.1)";
+                                div1.style.backgroundColor = "aqua";
                                 noofnewmsgs -= 1;
+                                console.log("colored");
                             }
                         }
                     }
@@ -311,8 +314,9 @@ var retrievechats = (sender,receiver) => {
                     messages.appendChild(div1);
                     if(noofnewmsgs != 0){
                         if(i == (result.data.chats.length - noofnewmsgs)){
-                            div1.style.backgroundColor = "rgba(0,0,0,0.1)";
+                            div1.style.backgroundColor = "aqua";
                             noofnewmsgs -= 1;
+                            console.log("colored");
                         }
                     }
                 }
