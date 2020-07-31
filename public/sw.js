@@ -101,8 +101,12 @@ self.addEventListener("notificationclick",e => {
             e.notification.close();
             clients.openWindow("https://wassuppro.herokuapp.com");
         }
-        else if(e.action == "close"){}
-        else{}
+        else if(e.action == "close"){
+            e.notification.close();
+        }
+        else{
+            e.notification.close();
+        }
         e.notification.close();
     }
     if(e.notification.data.message == "video"){

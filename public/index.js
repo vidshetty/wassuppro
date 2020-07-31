@@ -971,6 +971,10 @@ document.addEventListener("visibilitychange",() => {
                 from: chatroomemail,
                 to: loggedinemail
             }).then(result => {
+                socket.emit("seen",{
+                    from: chatroomemail,
+                    to: loggedinemail
+                });
                 retrievechats(loggedinemail,chatroomemail,result.data.length);
                 socket.emit("clear",{
                     from: chatroomemail,
