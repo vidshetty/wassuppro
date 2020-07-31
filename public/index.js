@@ -254,6 +254,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
         sender: sender,
         receiver: receiver
     }).then(result => {
+        seendiv = null;
         loader1.classList.add("none");
         if(result.data.chats != "no chats"){
             lastemail = result.data.chats[(result.data.chats.length - 1)].email;
@@ -664,7 +665,7 @@ sendbutton.addEventListener("click",(e) => {
         messages.removeChild(randomdiv);
     }
     if(seendiv != null){
-        // messages.removeChild(seendiv);
+        messages.removeChild(seendiv);
     }
     randomdiv = null;
     seendiv = null;
