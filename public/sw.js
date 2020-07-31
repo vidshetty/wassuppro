@@ -4,30 +4,55 @@ self.addEventListener('push',e => {
     if(obj.type == "text"){
         var title = obj.title;
         var completemsg = "";
-        for(var i=0;i<obj.body;i++){
+        var i = 0;
+        for(i=0;i<obj.body;i++){
             completemsg += `${obj.body[i]}\n`;
         }
-        var options = {
-            body: `${completemsg}`,
-            icon: "./icons8-hangouts-512.png",
-            badge: "./icons8-hangouts-96.png",
-            data: {
-                message: "text"
-            },
-            actions:[
-                {
-                    action: "reply",
-                    title: "Reply"
+        if(i == obj.body){
+            console.log("completemsg ",completemsg);
+            var options = {
+                body: `${completemsg}`,
+                icon: "./icons8-hangouts-512.png",
+                badge: "./icons8-hangouts-96.png",
+                data: {
+                    message: "text"
                 },
-                {
-                    action: "close",
-                    title: "Dismiss"
-                }
-            ]
-        };
-        e.waitUntil(
-            self.registration.showNotification(title, options)
-        );
+                actions:[
+                    {
+                        action: "reply",
+                        title: "Reply"
+                    },
+                    {
+                        action: "close",
+                        title: "Dismiss"
+                    }
+                ]
+            };
+            e.waitUntil(
+                self.registration.showNotification(title, options)
+            );
+        }
+        // var options = {
+        //     body: `${completemsg}`,
+        //     icon: "./icons8-hangouts-512.png",
+        //     badge: "./icons8-hangouts-96.png",
+        //     data: {
+        //         message: "text"
+        //     },
+        //     actions:[
+        //         {
+        //             action: "reply",
+        //             title: "Reply"
+        //         },
+        //         {
+        //             action: "close",
+        //             title: "Dismiss"
+        //         }
+        //     ]
+        // };
+        // e.waitUntil(
+        //     self.registration.showNotification(title, options)
+        // );
     }
     if(obj.type == "video"){
         var title = obj.title;
