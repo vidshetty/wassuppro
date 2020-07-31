@@ -265,12 +265,12 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "aqua";
+                                div1.style.backgroundColor = "black";
                                 noofnewmsgs -= 1;
                                 console.log("colored");
                                 setTimeout(() => {
                                     div1.style.backgroundColor = "transparent";
-                                },2000);
+                                },1000);
                             }
                         }
                     }
@@ -289,12 +289,12 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                         messages.appendChild(div1);
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
-                                div1.style.backgroundColor = "aqua";
+                                div1.style.backgroundColor = "black";
                                 noofnewmsgs -= 1;
                                 console.log("colored");
                                 setTimeout(() => {
                                     div1.style.backgroundColor = "transparent";
-                                },2000);
+                                },1000);
                             }
                         }
                     }
@@ -314,12 +314,12 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     messages.appendChild(div1);
                     if(noofnewmsgs != 0){
                         if(i == (result.data.chats.length - noofnewmsgs)){
-                            div1.style.backgroundColor = "aqua";
+                            div1.style.backgroundColor = "black";
                             noofnewmsgs -= 1;
                             console.log("colored");
                             setTimeout(() => {
                                 div1.style.backgroundColor = "transparent";
-                            },2000);
+                            },1000);
                         }
                     }
                 }
