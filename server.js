@@ -77,6 +77,9 @@ var findnewMessage = (num,data,socket) => {
                 var rarr = doc.messages;
                 rarr.push(data.message);
                 NewMessages.findOneAndUpdate({to: data.receiver,from:data.sender},{messages: rarr},{new:true}).then(result => {
+                    socket.emit("confirm",{
+                        val: "inserted"
+                    });
                 });
             }
             else{
@@ -90,6 +93,9 @@ var findnewMessage = (num,data,socket) => {
                         messages: rarr
                     });
                     newm.save().then((result) => {
+                        socket.emit("confirm",{
+                            val: "created"
+                        });
                     });
                 });
             }

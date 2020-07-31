@@ -20,6 +20,7 @@ const mute = document.querySelector(".mute");
 const videomute = document.querySelector(".videomute");
 const close = document.querySelector(".close");
 var lastemail = "";
+var mainmsg = "";
 var newcount = -1;
 var oldcount = 0;
 var t;
@@ -551,6 +552,7 @@ msginput.addEventListener("keyup",(e) => {
 });
 sendbutton.addEventListener("click",(e) => {
     var msg = msginput.value;
+    mainmsg = msg;
     if(msg.match(/^[\s]*$/)){
         msginput.value = "";
         textareaheightfunc(textarea.scrollHeight);
@@ -576,12 +578,6 @@ sendbutton.addEventListener("click",(e) => {
         socket.emit("sendmsg",{
             sender: loggedinemail,
             receiver: chatroomemail,
-            message: msg
-        });
-        socket.emit("notify",{
-            sender: loggedinemail,
-            receiver: chatroomemail,
-            sendername: loggedinname,
             message: msg
         });
         socket.emit("typing?",{
@@ -643,6 +639,13 @@ socket.on("typingyes",val => {
 
 socket.on("confirm",() => {
     getallchats();
+    socket.emit("notify",{
+        sender: loggedinemail,
+        receiver: chatroomemail,
+        sendername: loggedinname,
+        message: mainmsg
+    });
+    mainmsg = "";
 });
 
 socket.on("callrequest",data => {
