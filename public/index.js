@@ -597,6 +597,8 @@ window.onresize = function(){
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+    console.log(e.currentTarget.style.height);
+    console.log(e.currentTarget.scrollHeight);
     textareaheightfunc(e.currentTarget.scrollHeight);
 });
 searchinput.addEventListener("keyup",(e) => {
