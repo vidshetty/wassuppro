@@ -664,7 +664,7 @@ sendbutton.addEventListener("click",(e) => {
         messages.removeChild(randomdiv);
     }
     if(seendiv != null){
-        messages.removeChild(seendiv);
+        // messages.removeChild(seendiv);
     }
     randomdiv = null;
     seendiv = null;
