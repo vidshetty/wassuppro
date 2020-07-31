@@ -350,6 +350,10 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     from: chatroomemail
                 });
             }
+            socket.emit("isseen",{
+                from: loggedinemail,
+                to: chatroomemail
+            });
         }
     });
     getonlinestatus(receiver);
