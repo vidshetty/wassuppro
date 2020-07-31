@@ -1,5 +1,6 @@
 self.addEventListener('push',e => {
     var obj = e.data.json();
+    console.log(obj);
     if(obj.type == "text"){
         var title = obj.title;
         var completemsg = "";
