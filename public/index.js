@@ -108,7 +108,7 @@ else{
                     if(Notification.permission == "granted"){
                         axios.post("/subscribe",{
                             data: JSON.stringify(subs),
-                            email: emailid
+                            email: loggedinemail
                         }).then(data => {});
                     }
                 });
