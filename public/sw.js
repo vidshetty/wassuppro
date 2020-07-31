@@ -28,7 +28,6 @@ self.addEventListener('push',e => {
                 else{
                     completemsg += `${obj.body[leng-i]}`;
                 }
-                completemsg += `${obj.body[i]}\n`;
             }
         }
         var options = {
