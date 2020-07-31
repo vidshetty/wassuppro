@@ -443,7 +443,7 @@ body{
     width: 100vw;
     height: auto;
     text-align: left;
-    padding-left: 15px;
+    padding: 15px;
     font-size: 1.3em;
     font-family: "Google Sans",sans-serif;
     color: rgba(255,255,255,0.2);
