@@ -269,7 +269,8 @@ io.on("connection",socket => {
                                 title: data.sendername,
                                 body: result.messages,
                                 type: "text",
-                                msg: data.message
+                                msg: data.message,
+                                streaming: "true"
                             });
                             var subscription = JSON.parse(doc.subscription[0]);
                             push.sendNotification(subscription,payload);

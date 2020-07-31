@@ -30,26 +30,46 @@ self.addEventListener('push',e => {
                 }
             }
         }
-        var options = {
-            body: `${completemsg}`,
-            icon: "./icons8-hangouts-512.png",
-            badge: "./icons8-hangouts-96.png",
-            tag: "renotify",
-            renotify: true,
-            data: {
-                message: "text"
-            },
-            actions:[
-                {
-                    action: "reply",
-                    title: "Reply"
+        if(obj.streaming == "true"){
+            var options = {
+                body: `${completemsg}`,
+                icon: "./icons8-hangouts-512.png",
+                badge: "./icons8-hangouts-96.png",
+                tag: "renotify",
+                renotify: true,
+                data: {
+                    message: "text during call"
                 },
-                {
-                    action: "close",
-                    title: "Dismiss"
-                }
-            ]
-        };
+                actions:[
+                    {
+                        action: "close",
+                        title: "Dismiss"
+                    }
+                ]
+            };
+        }
+        else{
+            var options = {
+                body: `${completemsg}`,
+                icon: "./icons8-hangouts-512.png",
+                badge: "./icons8-hangouts-96.png",
+                tag: "renotify",
+                renotify: true,
+                data: {
+                    message: "text"
+                },
+                actions:[
+                    {
+                        action: "reply",
+                        title: "Reply"
+                    },
+                    {
+                        action: "close",
+                        title: "Dismiss"
+                    }
+                ]
+            };
+        }
         e.waitUntil(
             self.registration.showNotification(title, options)
         );
@@ -89,6 +109,12 @@ self.addEventListener("notificationclick",e => {
         e.notification.close();
     }
     if(e.notification.data.message == "video"){
+        if(e.action == "close"){
+            e.notification.close();
+        }
+        e.notification.close();
+    }
+    if(e.notification.data.message == "text during call"){
         if(e.action == "close"){
             e.notification.close();
         }
