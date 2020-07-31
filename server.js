@@ -444,7 +444,7 @@ app.post("/shownewmsgs",(req,res) => {
             res.send(doc.messages);
         }
         else{
-            res.send([];)
+            res.send([]);
         }
     });
 });
