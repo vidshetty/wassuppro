@@ -597,8 +597,6 @@ window.onresize = function(){
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
-    console.log(e.currentTarget.style.height);
-    console.log(e.currentTarget.scrollHeight);
     textareaheightfunc(e.currentTarget.scrollHeight);
 });
 searchinput.addEventListener("keyup",(e) => {
@@ -664,12 +662,12 @@ msginput.addEventListener("keyup",(e) => {
 sendbutton.addEventListener("click",(e) => {
     if(randomdiv != null){
         messages.removeChild(randomdiv);
-        randomdiv = null;
     }
     if(seendiv != null){
         messages.removeChild(seendiv);
-        seendiv = null;
     }
+    randomdiv = null;
+    seendiv = null;
     var msg = msginput.value;
     mainmsg = msg;
     if(msg.match(/^[\s]*$/)){
@@ -725,10 +723,10 @@ socket.on("livemsg",data => {
         if(randomdiv != null){
             randomdiv.textContent = "new messages";
         }
-        if(seendiv != null){
-            messages.removeChild(seendiv);
-            seendiv = null;
-        }
+        // if(seendiv != null){
+        //     messages.removeChild(seendiv);
+        //     seendiv = null;
+        // }
         socket.emit("seen",{
             from: chatroomemail,
             to: loggedinemail
