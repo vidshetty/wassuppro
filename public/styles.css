@@ -444,7 +444,7 @@ body{
     height: auto;
     text-align: left;
     padding: 15px;
-    font-size: 1.3em;
+    font-size: 1em;
     font-family: "Google Sans",sans-serif;
     color: rgba(255,255,255,0.2);
 }
@@ -452,8 +452,8 @@ body{
     width: 100vw;
     height: auto;
     text-align: right;
-    padding: 15px;
-    font-size: 1.3em;
+    padding-right: 15px;
+    font-size: 1em;
     font-family: "Google Sans",sans-serif;
     color: rgba(255,255,255,0.2);
 }

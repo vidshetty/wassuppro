@@ -266,11 +266,15 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     if(result.data.chats[i-1].email != result.data.chats[i].email){
                         if(sender == result.data.chats[i].email){
                             div2.setAttribute("class","msg right");
-                            div2.style.marginTop = "15px";
+                            if(i < result.data.chats.length - noofnewmsgs){
+                                div2.style.marginTop = "15px";
+                            }
                         }
                         else{
                             div2.setAttribute("class","msg left");
-                            div2.style.marginTop = "15px";
+                            if(i < result.data.chats.length - noofnewmsgs){
+                                div2.style.marginTop = "15px";
+                            }
                         }
                         if(noofnewmsgs != 0){
                             if(i == (result.data.chats.length - noofnewmsgs)){
