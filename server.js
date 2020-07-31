@@ -439,7 +439,7 @@ io.on("connection",socket => {
 });
 
 app.post("/shownewmsgs",(req,res) => {
-    NewMessages.findOne({from: req.body.from,to: req.body.to}),then(doc => {
+    NewMessages.findOne({from: req.body.from,to: req.body.to}).then(doc => {
         res.send(doc.messages);
     });
 });
