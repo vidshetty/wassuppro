@@ -208,6 +208,7 @@ io.on("connection",socket => {
                 // }
                 if(counter == 0){
                     NewMessages.findOne({from: data.sender,to: data.receiver}).then(result => {
+                        console.log(result);
                         var payload = JSON.stringify({
                             title: data.sendername,
                             body: result.messages,
