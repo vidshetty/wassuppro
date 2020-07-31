@@ -235,6 +235,27 @@ io.on("connection",socket => {
                     // .then(() => {});
                 }
             }
+            else{
+                if(doc.videocall == "streaming"){
+                    if(counter == 0){
+                        NewMessages.findOne({from: data.sender,to: data.receiver}).then(result => {
+                            console.log(result);
+                            var payload = JSON.stringify({
+                                title: data.sendername,
+                                body: result.messages,
+                                type: "text",
+                                msg: data.message
+                            });
+                            var subscription = JSON.parse(doc.subscription[0]);
+                            push.sendNotification(subscription,payload);
+                            var newnotify = doc.textnotification;
+                            newnotify.push(data.sender);
+                            LoggedInUsers.findOneAndUpdate({email: data.receiver},{textnotification: newnotify},{new:true})
+                            .then(() => {});
+                        });
+                    }
+                }
+            }
         });
     });
 
