@@ -439,7 +439,7 @@ backbutton.addEventListener("click",(e) => {
     chatroomemail = "";
     msginputcount = 0;
     titlepre.innerText = "";
-    getallchats();
+    // getallchats();
 });
 logoutbutton.addEventListener("click",(e) => {
     socket.emit("delete",{
