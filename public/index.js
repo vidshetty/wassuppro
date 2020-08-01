@@ -183,6 +183,7 @@ var getallchats = () => {
                             retrievechats(loggedinemail,chatroomemail,result.data.length);
                         });
                         chatlist.removeChild(e.currentTarget);
+                        getallchats();
                     });
                 }
             });
@@ -206,6 +207,7 @@ var getallchats = () => {
                         isitnew = "false";
                         loader1.classList.remove("none");
                         retrievechats(loggedinemail,chatroomemail,0);
+                        getallchats();
                     });
                 }
             });
@@ -216,6 +218,7 @@ var getallchats = () => {
             div.textContent = "No chats";
             chatlist.appendChild(div);
         }
+        chatlist.scrollTop = 0;
     });
 }
 
@@ -1015,4 +1018,20 @@ socket.on("interruptres",data => {
             callermodal.classList.add("none");
         },2000);
     }
+});
+
+document.addEventListener("deviceready",() => {
+    document.addEventListener("backbutton",() => {
+        if(!main.classList.contains("none")){
+        }
+        if(!addscreen.classList.contains("none")){
+            cancelbutton.click();
+        }
+        if(!chatroom.classList.contains("none")){
+            backbutton.click();
+        }
+        if(!callui.classList.contains("none")){
+            close.click();
+        }
+    });
 });
