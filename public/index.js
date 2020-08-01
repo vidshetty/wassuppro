@@ -442,6 +442,7 @@ backbutton.addEventListener("click",(e) => {
     chatroomemail = "";
     msginputcount = 0;
     titlepre.innerText = "";
+    randomdiv = null;
     // getallchats();
 });
 logoutbutton.addEventListener("click",(e) => {
