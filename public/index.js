@@ -220,13 +220,14 @@ var getallchats = () => {
 }
 
 socket.on("seen",data => {
+    if(seendiv == null){
     if(data.seen = "true" && chatroomemail == data.to && lastemail == loggedinemail && randomdiv == null){
         seendiv = document.createElement("div");
         seendiv.setAttribute("class","eachright");
         seendiv.textContent = "seen";
         messages.appendChild(seendiv);
         messages.scrollTop = messages.scrollHeight;
-    }
+    }}
 });
 
 var compare = (a,b) => {
@@ -248,6 +249,7 @@ var getonlinestatus = (other) => {
 }
 
 var retrievechats = (sender,receiver,noofnewmsgs) => {
+    messages.innerHTML = "";
     msginputcount = 0;
     othermsgcount = 0;
     axios.post("/retrievechats",{
@@ -661,14 +663,6 @@ msginput.addEventListener("keyup",(e) => {
     }
 });
 sendbutton.addEventListener("click",(e) => {
-    if(randomdiv != null){
-        messages.removeChild(randomdiv);
-    }
-    if(seendiv != null){
-        messages.removeChild(seendiv);
-    }
-    randomdiv = null;
-    seendiv = null;
     var msg = msginput.value;
     mainmsg = msg;
     if(msg.match(/^[\s]*$/)){
@@ -676,6 +670,14 @@ sendbutton.addEventListener("click",(e) => {
         textareaheightfunc(textarea.scrollHeight);
     }
     else{
+        if(randomdiv != null){
+            messages.removeChild(randomdiv);
+        }
+        if(seendiv != null){
+            messages.removeChild(seendiv);
+        }
+        randomdiv = null;
+        seendiv = null;
         const divmain = document.createElement("div");
         const divin = document.createElement("div");
         divmain.setAttribute("class","eachmsg");

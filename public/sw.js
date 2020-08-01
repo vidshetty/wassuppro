@@ -98,14 +98,13 @@ self.addEventListener('push',e => {
 self.addEventListener("notificationclick",e => {
     if(e.notification.data.message == "text"){
         if(e.action == "reply"){
-            e.notification.close();
             clients.openWindow("https://wassuppro.herokuapp.com");
         }
         else if(e.action == "close"){
             e.notification.close();
         }
         else{
-            e.notification.close();
+            clients.openWindow("https://wassuppro.herokuapp.com");
         }
         e.notification.close();
     }
