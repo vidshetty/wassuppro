@@ -1020,18 +1020,15 @@ socket.on("interruptres",data => {
     }
 });
 
-document.addEventListener("deviceready",() => {
-    document.addEventListener("backbutton",() => {
-        if(!main.classList.contains("none")){
-        }
-        if(!addscreen.classList.contains("none")){
-            cancelbutton.click();
-        }
-        if(!chatroom.classList.contains("none")){
-            backbutton.click();
-        }
-        if(!callui.classList.contains("none")){
-            close.click();
-        }
-    },false);
-},false);
+window.addEventListener("hashchange",() => {
+    if(!addscreen.classList.contains("none")){
+        cancelbutton.click();
+    }
+    else if(!chatroom.classList.contains("none")){
+        backbutton.click();
+    }
+    else if(!callui.classList.contains("none")){
+        close.click();
+    }
+    else{}
+});
