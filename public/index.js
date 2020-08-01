@@ -1033,5 +1033,5 @@ document.addEventListener("deviceready",() => {
         if(!callui.classList.contains("none")){
             close.click();
         }
-    });
-});
+    },false);
+},false);
