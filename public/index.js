@@ -183,8 +183,6 @@ var getallchats = () => {
                             retrievechats(loggedinemail,chatroomemail,result.data.length);
                         });
                         chatlist.removeChild(e.currentTarget);
-                        getallchats();
-                        console.log("getallchats");
                     });
                 }
             });
@@ -208,8 +206,6 @@ var getallchats = () => {
                         isitnew = "false";
                         loader1.classList.remove("none");
                         retrievechats(loggedinemail,chatroomemail,0);
-                        getallchats();
-                        console.log("getallchats");
                     });
                 }
             });
@@ -223,6 +219,11 @@ var getallchats = () => {
         chatlist.scrollTop = 0;
     });
 }
+
+socket.on("cleared",data => {
+    getallchats();
+    console.log("cleared");
+});
 
 socket.on("seen",data => {
     if(seendiv == null){

@@ -302,6 +302,9 @@ io.on("connection",socket => {
 
     socket.on("clear",data => {
         NewMessages.findOneAndDelete({from: data.from,to: data.to}).then(result => {
+            socket.emit("cleared",{
+                res: "cleared"
+            });
         });
     });
 
