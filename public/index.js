@@ -1020,8 +1020,22 @@ socket.on("interruptres",data => {
     }
 });
 
-window.addEventListener("hashchange",e => {
-    e.preventDefault();
+// window.addEventListener("hashchange",e => {
+//     e.preventDefault();
+//     if(!addscreen.classList.contains("none")){
+//         cancelbutton.click();
+//     }
+//     else if(!chatroom.classList.contains("none")){
+//         backbutton.click();
+//     }
+//     else if(!callui.classList.contains("none")){
+//         close.click();
+//     }
+//     else{}
+// });
+
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
     if(!addscreen.classList.contains("none")){
         cancelbutton.click();
     }
@@ -1032,4 +1046,4 @@ window.addEventListener("hashchange",e => {
         close.click();
     }
     else{}
-});
+};
