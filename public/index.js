@@ -222,7 +222,6 @@ var getallchats = () => {
 
 socket.on("cleared",data => {
     getallchats();
-    console.log("cleared");
 });
 
 socket.on("seen",data => {
