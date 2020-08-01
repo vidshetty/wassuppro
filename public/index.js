@@ -184,6 +184,7 @@ var getallchats = () => {
                         });
                         chatlist.removeChild(e.currentTarget);
                         getallchats();
+                        console.log("getallchats");
                     });
                 }
             });
@@ -208,6 +209,7 @@ var getallchats = () => {
                         loader1.classList.remove("none");
                         retrievechats(loggedinemail,chatroomemail,0);
                         getallchats();
+                        console.log("getallchats");
                     });
                 }
             });
