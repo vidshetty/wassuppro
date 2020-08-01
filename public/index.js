@@ -1020,7 +1020,8 @@ socket.on("interruptres",data => {
     }
 });
 
-window.addEventListener("hashchange",() => {
+window.addEventListener("hashchange",e => {
+    e.preventDefault();
     if(!addscreen.classList.contains("none")){
         cancelbutton.click();
     }
