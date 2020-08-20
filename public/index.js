@@ -356,6 +356,28 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
                     messages.appendChild(div1);
                 }
                 messages.scrollTop = messages.scrollHeight;
+                var timer,inner,impval = 0;
+                div2.addEventListener("touchstart",() => {
+                    timer = setTimeout(() => {
+                        impval = 1;
+                        div2.style.marginLeft = "30px";
+                        console.log("moved left")
+                        inner = setTimeout(() => {
+                            div2.style.marginLeft = "10px";
+                            console.log("moved right")
+                        },1000);
+                    },1000);
+                });
+                div2.addEventListener("touchend",() => {
+                    if(impval == 0 && div2.style.marginLeft == "10px"){
+                        clearTimeout(timer);
+                        clearTimeout(inner);
+                        console.log("cleared both")
+                    }
+                    else{
+                        impval = 0;
+                    }
+                });
             };
             if(isitnew == "true"){
                 socket.emit("clear",{
@@ -372,6 +394,7 @@ var retrievechats = (sender,receiver,noofnewmsgs) => {
     getonlinestatus(receiver);
 }
 
+const paymentbutton = document.querySelector(".paymentbutton");
 const sendbutton = document.querySelector(".sendbutton");
 const logoutbutton = document.querySelector(".logoutbutton");
 const usertitle = document.querySelector(".usertitle p");
@@ -603,6 +626,20 @@ receivebutton.addEventListener("click",() => {
 window.onresize = function(){
     textareaheightfunc(42);
 }
+textarea.addEventListener("focus",() => {
+    textarea.style.width = "80%";
+    // paymentbutton.style.opacity = 0;
+    paymentbutton.style.width = "0px";
+    paymentbutton.style.height = "0px";
+});
+paymentbutton.addEventListener("click",() => {
+    console.log("do nothing");
+});
+textarea.addEventListener("focusout",() => {
+    textarea.style.width = "65%";
+    paymentbutton.style.width = "45px";
+    paymentbutton.style.height = "45px";
+});
 textarea.addEventListener("input",(e) => {
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
@@ -712,6 +749,7 @@ sendbutton.addEventListener("click",(e) => {
             val: "stopped"
         });
     }
+    textarea.focus();
 });
 
 
