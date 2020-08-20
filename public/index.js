@@ -626,21 +626,31 @@ receivebutton.addEventListener("click",() => {
 window.onresize = function(){
     textareaheightfunc(42);
 }
-textarea.addEventListener("focus",() => {
-    textarea.style.width = "80%";
-    // paymentbutton.style.opacity = 0;
-    paymentbutton.style.width = "0px";
-    paymentbutton.style.height = "0px";
-});
+// textarea.addEventListener("focus",() => {
+//     textarea.style.width = "80%";
+//     // paymentbutton.style.opacity = 0;
+//     paymentbutton.style.width = "0px";
+//     paymentbutton.style.height = "0px";
+// });
 paymentbutton.addEventListener("click",() => {
     console.log("do nothing");
 });
-textarea.addEventListener("focusout",() => {
-    textarea.style.width = "65%";
-    paymentbutton.style.width = "45px";
-    paymentbutton.style.height = "45px";
-});
+// textarea.addEventListener("focusout",() => {
+//     textarea.style.width = "65%";
+//     paymentbutton.style.width = "45px";
+//     paymentbutton.style.height = "45px";
+// });
 textarea.addEventListener("input",(e) => {
+    if(textarea.value != ""){
+        textarea.style.width = "80%";
+        paymentbutton.style.width = "0px";
+        paymentbutton.style.height = "0px";
+    }
+    else{
+        textarea.style.width = "65%";
+        paymentbutton.style.width = "45px";
+        paymentbutton.style.height = "45px";
+    }
     e.currentTarget.style.height = "auto";
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
     textareaheightfunc(e.currentTarget.scrollHeight);
