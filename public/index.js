@@ -1063,33 +1063,6 @@ socket.on("interruptres",data => {
     }
 });
 
-// window.addEventListener("hashchange",e => {
-//     e.preventDefault();
-//     if(!addscreen.classList.contains("none")){
-//         cancelbutton.click();
-//     }
-//     else if(!chatroom.classList.contains("none")){
-//         backbutton.click();
-//     }
-//     else if(!callui.classList.contains("none")){
-//         close.click();
-//     }
-//     else{}
-// });
-
-// history.pushState(null, null, location.href);
-// window.onpopstate = function () {
-//     if(!addscreen.classList.contains("none")){
-//         cancelbutton.click();
-//     }
-//     else if(!chatroom.classList.contains("none")){
-//         backbutton.click();
-//     }
-//     else if(!callui.classList.contains("none")){
-//         close.click();
-//     }
-//     else{}
-// };
 history.pushState(null, null, window.top.location.pathname + window.top.location.search);
 window.addEventListener('popstate', (e) => {
     e.preventDefault();

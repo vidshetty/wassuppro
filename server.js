@@ -17,14 +17,11 @@ const PORT = process.env.PORT || 8000;
 var randomotp = 0;
 var account = [];
 
-var keys = {
-    publicKey: 'BEcF57uMF5LyK9boqYxf-9q21GdcWX707xxPz-MWieIhCI4lwBCgP9xtxWeYq632HaR0b9mwI9GW1dxs6r2zoV0',
-    privateKey: 'PE4b8oi4JZyIqcCh6yFAt7uU_flRI7_of8nbKVkPgBE'
-}
+//keys
 
 push.setVapidDetails("mailto:test@test.com",keys.publicKey,keys.privateKey);
 
-mongoose.connect("mongodb+srv://vid_shetty:itsmemongodb1998@tictactoe.jfyxk.mongodb.net/wassup?retryWrites=true&w=majority",{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect("",{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.once("open",() => {
     console.log("Database connected");
 });
@@ -162,13 +159,13 @@ var mailer = (req) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'wassupnode@gmail.com',
-          pass: 'itsmeWASSUP@1998'
+          user: '',
+          pass: ''
         }
     });
       
     var mailOptions = {
-        from: 'wassupnode@gmail.com',
+        from: '',
         to: req.body.email,
         subject: 'Verification mail from Wassup!',
         text: `Your verification password is "${randomotp}". Do not reply or forward this mail.` 
