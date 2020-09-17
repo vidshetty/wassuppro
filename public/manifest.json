@@ -6,32 +6,32 @@
     "orientation": "portrait-primary",
     "icons": [
         {
-            "src": "./icons8-hangouts-48.png",
+            "src": "./images/icons8-hangouts-48.png",
             "type": "image/png",
             "sizes": "48x48"
         },
         {
-            "src": "./icons8-hangouts-96.png",
+            "src": "./images/icons8-hangouts-96.png",
             "type": "image/png",
             "sizes": "96x96"
         },
         {
-            "src": "./icons8-hangouts-144.png",
+            "src": "./images/icons8-hangouts-144.png",
             "type": "image/png",
             "sizes": "144x144"
         },
         {
-            "src": "./icons8-hangouts-240.png",
+            "src": "./images/icons8-hangouts-240.png",
             "type": "image/png",
             "sizes": "240x240"
         },
         {
-            "src": "./icons8-hangouts-480.png",
+            "src": "./images/icons8-hangouts-480.png",
             "type": "image/png",
             "sizes": "480x480"
         },
         {
-            "src": "./icons8-hangouts-512.png",
+            "src": "./images/icons8-hangouts-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }

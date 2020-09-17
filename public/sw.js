@@ -32,8 +32,8 @@ self.addEventListener('push',e => {
         if(obj.streaming == "true"){
             var options = {
                 body: `${completemsg}`,
-                icon: "./icons8-hangouts-512.png",
-                badge: "./icons8-hangouts-96.png",
+                icon: "./images/icons8-hangouts-512.png",
+                badge: "./images/icons8-hangouts-96.png",
                 tag: "renotify",
                 renotify: true,
                 data: {
@@ -50,8 +50,8 @@ self.addEventListener('push',e => {
         else{
             var options = {
                 body: `${completemsg}`,
-                icon: "./icons8-hangouts-512.png",
-                badge: "./icons8-hangouts-96.png",
+                icon: "./images/icons8-hangouts-512.png",
+                badge: "./images/icons8-hangouts-96.png",
                 tag: "renotify",
                 renotify: true,
                 data: {
@@ -77,8 +77,8 @@ self.addEventListener('push',e => {
         var title = obj.title;
         var options = {
             body: `tried to video call you`,
-            icon: "./icons8-hangouts-512.png",
-            badge: "./icons8-hangouts-96.png",
+            icon: "./images/icons8-hangouts-512.png",
+            badge: "./images/icons8-hangouts-96.png",
             data: {
                 message: "video"
             },
